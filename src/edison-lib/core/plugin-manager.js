@@ -83,13 +83,22 @@ exports.config = require('./config-manager.js').config;
 //Verifies that a plugin confirms to the interface type it claims to be.
 exports.loadPlugin = function(pluginName)
 {
+  var emptyPlugin = true;
   var pluginDirectoryPath = getPluginDirectoryPath(pluginName);
   var suffixKeys = Object.keys(config.communicationPlugins.fileSuffixes);
 
 	for (var i = 0; i < suffixKeys.length; i++) {
     var suffix = config.communicationPlugins.fileSuffixes[suffixKeys[i]];
     var pluginFileName = pluginName + '-' + suffix + '.js';
-		var plugin = require(path.join(pluginDirectoryPath, pluginFileName));
+    var pluginFilePath = path.join(pluginDirectoryPath, pluginFileName);
+
+    if (!fs.existsSync(pluginFilePath)) {
+      continue;
+    }
+
+    emptyPlugin = false;
+
+		var plugin = require(pluginFilePath);
 		var pluginPrototype = null;
 
 		if (typeof plugin === "function" && plugin.prototype)
@@ -125,6 +134,10 @@ exports.loadPlugin = function(pluginName)
 
     exports.loadedPlugins[pluginName][suffix] = plugin;
 	}
+
+  if (emptyPlugin) {
+    console.log("WARN: No plugin files were found. Empty plugin directory?");
+  }
 };
 
 exports.getClientPlugin = function (name) {

@@ -1,4 +1,4 @@
-var PluginManager = require("./plugin-manager.njs");
+var PluginManager = require("./plugin-manager.js");
 
 Service.prototype.comm = null;
 Service.prototype.spec = null;
