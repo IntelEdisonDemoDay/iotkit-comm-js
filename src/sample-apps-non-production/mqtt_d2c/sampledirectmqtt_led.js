@@ -1,6 +1,6 @@
 //'use strict';
 
-var edison = require('edison-lib');
+var edison = require('lib');
 var path = require('path');
 var fs = require('fs');
 var PIA = require('.');

@@ -1,0 +1,10 @@
+{
+  "source": {
+    "exclude": "src/sample-apps-non-production"
+  },
+  "opts": {
+    "destination": "docs/api/",
+    "recurse": true,
+    "tutorials": "docs/tutorials"
+  }
+}
