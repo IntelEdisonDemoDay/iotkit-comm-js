@@ -15,15 +15,20 @@
  */
 var mqtt = require('mqtt');
 
-EdisonIoTKitClient.prototype.interface = "edison-client-interface";
+EdisonIoTKitClient.prototype.interface = "edison-iotkit-client-interface";
 
-EdisonIoTKitClient.prototype.client = {};
+EdisonIoTKitClient.prototype.service = {};
 EdisonIoTKitClient.prototype.receivedMsgHandler = null;
 
 function EdisonIoTKitClient(serviceSpec) {
     "use strict";
 
-    this.client = mqtt.createClient(serviceSpec.port, serviceSpec.address);
+    if (serviceSpec.comm_params && serviceSpec.comm_params['ssl']) {
+        this.client = mqtt.createSecureClient(serviceSpec.port, serviceSpec.address,
+            serviceSpec.comm_params.args);
+    } else {
+        this.client = mqtt.createClient(serviceSpec.port, serviceSpec.address);
+    }
 
     var self = this;
     this.client.on('message', function (topic, message) {
@@ -33,16 +38,20 @@ function EdisonIoTKitClient(serviceSpec) {
     });
 }
 
+EdisonIoTKitClient.prototype.registerSensor = function(sensorname, type, unit){
+    this.client.publish("data", JSON.stringify({"n":sensorname, "t": type}));
+}
+
 EdisonIoTKitClient.prototype.send = function (msg, context) {
     this.client.publish(context.topic, msg);
 };
 
-EdisonIoTKitClient.prototype.subscribe = function (topic) {
-    this.client.subscribe(topic, this.receivedMsgHandler);
+EdisonIoTKitClient.prototype.subscribe = function () {
+    this.client.subscribe("data");
 };
 
 EdisonIoTKitClient.prototype.unsubscribe = function (topic) {
-    this.client.unsubscribe(topic);
+    "use strict";
 };
 
 EdisonIoTKitClient.prototype.setReceivedMessageHandler = function(handler) {
