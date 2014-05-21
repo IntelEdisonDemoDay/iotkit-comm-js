@@ -7,5 +7,6 @@
     "address" : "127.0.0.1",
     "port" : 1884,
     "properties" : {"dataType": "float"},
-    "comm_params": {"ssl": false}
+    "comm_params": {"ssl": false},
+    "advertise": {"locally": false, "cloud": false}
 }

@@ -15,15 +15,20 @@
  */
 var mqtt = require('mqtt');
 
-EdisonIoTKitClient.prototype.interface = "edison-client-interface";
+EdisonIoTKitService.prototype.interface = "edison-iotkit-client-interface";
 
-EdisonIoTKitClient.prototype.client = {};
-EdisonIoTKitClient.prototype.receivedMsgHandler = null;
+EdisonIoTKitService.prototype.service = {};
+EdisonIoTKitService.prototype.receivedMsgHandler = null;
 
-function EdisonIoTKitClient(serviceSpec) {
+function EdisonIoTKitService(serviceSpec) {
     "use strict";
 
-    this.client = mqtt.createClient(serviceSpec.port, serviceSpec.address);
+    if (serviceSpec.comm_params && serviceSpec.comm_params['ssl']) {
+        this.client = mqtt.createSecureClient(serviceSpec.port, serviceSpec.address,
+            serviceSpec.comm_params.args);
+    } else {
+        this.client = mqtt.createClient(serviceSpec.port, serviceSpec.address);
+    }
 
     var self = this;
     this.client.on('message', function (topic, message) {
@@ -33,25 +38,29 @@ function EdisonIoTKitClient(serviceSpec) {
     });
 }
 
-EdisonIoTKitClient.prototype.send = function (msg, context) {
+EdisonIoTKitService.prototype.registerSensor = function(sensorname, type, unit){
+    this.client.publish("data", JSON.stringify({"n":sensorname, "t": type}));
+}
+
+EdisonIoTKitService.prototype.send = function (msg, context) {
     this.client.publish(context.topic, msg);
 };
 
-EdisonIoTKitClient.prototype.subscribe = function (topic) {
-    this.client.subscribe(topic, this.receivedMsgHandler);
+EdisonIoTKitService.prototype.subscribe = function (topic) {
+    this.client.subscribe(topic);
 };
 
-EdisonIoTKitClient.prototype.unsubscribe = function (topic) {
-    this.client.unsubscribe(topic);
+EdisonIoTKitService.prototype.unsubscribe = function (topic) {
+    "use strict";
 };
 
-EdisonIoTKitClient.prototype.setReceivedMessageHandler = function(handler) {
+EdisonIoTKitService.prototype.setReceivedMessageHandler = function(handler) {
     "use strict";
     this.receivedMsgHandler = handler;
 };
 
-EdisonIoTKitClient.prototype.done = function () {
+EdisonIoTKitService.prototype.done = function () {
     this.client.end();
 };
 
-module.exports = EdisonIoTKitClient;
+module.exports = EdisonIoTKitService;
