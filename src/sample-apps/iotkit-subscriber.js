@@ -23,7 +23,7 @@ var msg = "";
 edisonLib.createClientForGivenService(validator.getValidatedSpec(), function (client) {
     "use strict";
 
-    client.comm.subscribe("data");
+    client.comm.subscribe();
 
     client.comm.setReceivedMessageHandler(function(message, context) {
         "use strict";

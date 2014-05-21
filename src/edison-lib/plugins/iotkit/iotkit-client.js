@@ -46,8 +46,8 @@ EdisonIoTKitService.prototype.send = function (msg, context) {
     this.client.publish(context.topic, msg);
 };
 
-EdisonIoTKitService.prototype.subscribe = function (topic) {
-    this.client.subscribe(topic);
+EdisonIoTKitService.prototype.subscribe = function () {
+    this.client.subscribe("data");
 };
 
 EdisonIoTKitService.prototype.unsubscribe = function (topic) {
