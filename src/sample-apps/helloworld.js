@@ -12,5 +12,10 @@
  *
  * Created by adua.
  */
-var edison = require('edisonapi');
+
+/**
+ * @file simple program to test the proper installation of the Intel Edison Connectivity Framework (iecf).
+ */
+
+ var edison = require('edisonapi');
 console.log(edison.sayhello());

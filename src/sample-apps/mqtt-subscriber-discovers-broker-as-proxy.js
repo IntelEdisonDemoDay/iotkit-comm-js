@@ -14,21 +14,24 @@
  */
 
 /**
- * @file publishes data to the mini broadcast broker (see {@link sample-apps/mqtt-mini-broadcast-broker.js}). To test,
- * make sure the mini broker is running somewhere on the LAN.
+ * @file Client subscribes to temperature data from a temperature service. To test this program, first run
+ * {@link sample-apps/mqtt-publisher-advertise-broker-as-proxy.js}, then run this program somewhere on the
+ * same LAN.
  */
 
 var edisonLib = require("edisonapi");
 
 var query = new edisonLib.ServiceQuery();
-query.initServiceQueryFromFile("./serviceQueries/mqtt-mini-broker-query.json");
+query.initServiceQueryFromFile("./serviceQueries/temperatureServiceQueryMQTT.json");
 
 edisonLib.createClient(query, serviceFilter, function (client) {
 
-  setInterval(function () {
-    "use strict";
-    client.comm.send("my other message", {topic: "mytopic"});
-  }, 1000);
+    client.comm.subscribe(client.spec.name);
+
+    client.comm.setReceivedMessageHandler(function(message, context) {
+        "use strict";
+        console.log(message);
+    });
 
 });
 

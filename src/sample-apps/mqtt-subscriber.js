@@ -12,10 +12,22 @@
  *
  * Created by adua.
  */
+
+/**
+ * @file subscribes to data from a local MQTT broker (e.g. mosquitto). Preconditions are
+ * that the broker is running at a known address and port, that the broker specification's address and port
+ * are set to these known values (see {@link sample-apps/serviceSpecs/mqtt-borker-spec.json}), and that there
+ * is a publisher publishing to the broker on topic 'mytopic'. To test this program, make sure the MQTT
+ * broker is running and that the mqtt broker's service specification is correct. Then,
+ * run {@link sample-apps/mqtt-publisher.js} and finally, run this program. If running both publisher and
+ * subscriber on the same Edison, no changes are needed. Each Edison ships with an already running broker
+ * and the broker specification's address and port field are preset to '127.0.0.1' and '1883'.
+ */
+
 var edisonLib = require("edisonapi");
 
 var validator = new edisonLib.ServiceSpecValidator();
-validator.readServiceSpecFromFile("./serviceSpecs/temperatureServiceMQTTBROKER.json");
+validator.readServiceSpecFromFile("./serviceSpecs/mqtt-broker-spec.json");
 
 edisonLib.createClientForGivenService(validator.getValidatedSpec(), function (client) {
 

@@ -12,10 +12,17 @@
  *
  * Created by adua.
  */
+
+/**
+ * @file subscribes to data from the mini broadcast broker (see {@link sample-apps/mqtt-mini-broadcast-broker.js}). To
+ * test this program, make sure the mini broker and the publisher
+ * (see {@link sample-apps/mqtt-publisher-to-mini-broker.js}) are running somewhere on the same LAN.
+ */
+
 var edisonLib = require("edisonapi");
 
 var query = new edisonLib.ServiceQuery();
-query.initServiceQueryFromFile("./serviceQueries/temperatureServiceQueryMQTT.json");
+query.initServiceQueryFromFile("./serviceQueries/mqtt-mini-broker-query.json");
 
 edisonLib.createClient(query, serviceFilter, function (client) {
 

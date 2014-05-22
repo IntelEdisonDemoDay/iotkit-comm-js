@@ -12,6 +12,16 @@
  *
  * Created by adua.
  */
+
+/**
+ * @file Shows how to find and connect to an MQTT service or broker running on the LAN. First,
+ * call discoverServices with the appropriate service query ({@tutorial service-query}) and then
+ * call createClientForGivenService with the found service specification ({@tutorial service-spec}).
+ * The preconditions are that a network connections exists, that an MQTT service (or broker) is running
+ * on the LAN, and that the service is advertising appropriate service information. To run a sample of such
+ * a service see {@link sample-apps/mqtt-mini-broadcast-broker.js}
+ */
+
 var edisonLib = require("edisonapi");
 
 var query = new edisonLib.ServiceQuery();

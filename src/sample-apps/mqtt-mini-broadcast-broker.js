@@ -12,10 +12,19 @@
  *
  * Created by adua.
  */
+
+/**
+ * @file Shows a mini broadcast broker. The broker also advertises its existence on the LAN.
+ * In this case, it advertises itself with the word 'minibroker' in its name. Please note that this is
+ * merely a convention. To test this service, run it and then start the MQTT client
+ * {@link sample-apps/browse-services-create-mqtt-client.js} somewhere on the LAN. Notice that this
+ * client queries for a service with the word 'minibroker' in its name.
+ */
+
 var edisonLib = require('edisonapi');
 
 var validator = new edisonLib.ServiceSpecValidator();
-validator.readServiceSpecFromFile("./serviceSpecs/temperatureServiceMQTT-MINI-BROKER.json");
+validator.readServiceSpecFromFile("./serviceSpecs/mqtt-mini-broker-spec.json");
 
 edisonLib.createService(validator.getValidatedSpec(), function (service) {
   "use strict";

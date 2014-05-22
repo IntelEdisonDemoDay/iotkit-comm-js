@@ -12,10 +12,19 @@
  *
  * Created by adua.
  */
+
+/**
+ * @file publishes to and subscribes from an MQTT broker (e.g. mosquitto) on topic 'mytopic'. Preconditions
+ * are that the MQTT broker is running on a known address and port, and the broker specification
+ * file {@link sample-apps/serviceSpecs/mqtt-borker-spec.json} has the address and port fields
+ * correctly set. No changes are needed if this program is run on the Edison. Each Edison comes with a
+ * running broker and the address and port fields of the specification file are set to '127.0.0.1' and '1883'.
+ */
+
 var edisonLib = require("edisonapi");
 
 var validator = new edisonLib.ServiceSpecValidator();
-validator.readServiceSpecFromFile("./serviceSpecs/temperatureServiceMQTTBROKER.json");
+validator.readServiceSpecFromFile("./serviceSpecs/mqtt-broker-spec.json");
 
 edisonLib.createClientForGivenService(validator.getValidatedSpec(), function (client) {
 

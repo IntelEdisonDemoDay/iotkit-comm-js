@@ -21,7 +21,7 @@ var mqtt = require('mqtt');
 EdisonIoTKitClient.prototype.interface = "edison-iotkit-client-interface";
 
 /**
- * The client instance this plugin creates ({@tutorial plugin}).
+ * The internal client object this plugin ({@tutorial plugin}) creates to communicate with the remote client.
  * @type {object}
  */
 EdisonIoTKitClient.prototype.client = {};

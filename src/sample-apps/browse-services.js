@@ -12,6 +12,15 @@
  *
  * Created by adua.
  */
+
+/**
+ * @file Shows how to discover services running on the LAN. This takes two basic steps:
+ * first, create a service query; second, call discoverServices with the service query
+ * as input. The only precondition is that a network connection exists. If another service
+ * on the LAN is advertising service information that matches the query, then that information
+ * will be returned in the serviceSpec argument of the callback to discoverServices
+ * ({@tutorial service-spec}).
+ */
 var edisonLib = require("edisonapi");
 
 var query = new edisonLib.ServiceQuery();

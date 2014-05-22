@@ -1,5 +1,5 @@
 {
-  "name" : "/INTEL/NDG/temperature",
+  "name" : "/INTEL/NDG/minibroker",
   "type" : {
     "name": "mqtt",
     "protocol" : "tcp"

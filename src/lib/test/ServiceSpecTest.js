@@ -20,7 +20,7 @@ describe('[service specification]', function () {
       var edisonLib = require('edisonapi');
 
       var validator = new edisonLib.ServiceSpecValidator();
-      validator.readServiceSpecFromFile(path.join(__dirname, "serviceSpecs/temperatureServiceMQTT-MINI-BROKER.json"));
+      validator.readServiceSpecFromFile(path.join(__dirname, "serviceSpecs/mqtt-mini-broker-spec.json"));
       var spec = validator.getValidatedSpec();
 
       expect(spec.name).to.be.a('string');
