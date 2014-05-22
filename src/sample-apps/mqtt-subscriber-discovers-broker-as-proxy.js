@@ -19,12 +19,12 @@
  * same LAN.
  */
 
-var edisonLib = require('iecf');
+var iecf = require('iecf');
 
-var query = new edisonLib.ServiceQuery();
+var query = new iecf.ServiceQuery();
 query.initServiceQueryFromFile("./serviceQueries/temperatureServiceQueryMQTT.json");
 
-edisonLib.createClient(query, serviceFilter, function (client) {
+iecf.createClient(query, serviceFilter, function (client) {
 
     client.comm.subscribe(client.spec.name);
 

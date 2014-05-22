@@ -21,12 +21,12 @@
  * will be returned in the serviceSpec argument of the callback to discoverServices
  * ({@tutorial service-spec}).
  */
-var edisonLib = require('iecf');
+var iecf = require('iecf');
 
-var query = new edisonLib.ServiceQuery();
+var query = new iecf.ServiceQuery();
 query.initServiceQueryFromFile("./serviceQueries/temperatureServiceQueryMQTT.json");
 
-edisonLib.discoverServices(query, function (serviceSpec) {
+iecf.discoverServices(query, function (serviceSpec) {
   "use strict";
 
   console.log("Found " + serviceSpec.type.name + " service at " +

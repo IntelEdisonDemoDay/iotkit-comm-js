@@ -17,5 +17,5 @@
  * @file simple program to test the proper installation of the Intel Edison Connectivity Framework (iecf).
  */
 
- var edison = require('iecf');
-console.log(edison.sayhello());
+ var iecf = require('iecf');
+console.log(iecf.sayhello());

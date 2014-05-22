@@ -12,12 +12,12 @@
  *
  * Created by adua.
  */
-var edisonLib = require('iecf');
+var iecf = require('iecf');
 
-var query = new edisonLib.ServiceQuery();
+var query = new iecf.ServiceQuery();
 query.initServiceQueryFromFile("./serviceQueries/temperatureServiceQueryZMQREQREP.json");
 
-edisonLib.createClient(query, serviceFilter, function (client) {
+iecf.createClient(query, serviceFilter, function (client) {
   "use strict";
 
   client.comm.send("hello");

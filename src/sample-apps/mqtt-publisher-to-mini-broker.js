@@ -18,12 +18,12 @@
  * make sure the mini broker is running somewhere on the LAN.
  */
 
-var edisonLib = require('iecf');
+var iecf = require('iecf');
 
-var query = new edisonLib.ServiceQuery();
+var query = new iecf.ServiceQuery();
 query.initServiceQueryFromFile("./serviceQueries/mqtt-mini-broker-query.json");
 
-edisonLib.createClient(query, serviceFilter, function (client) {
+iecf.createClient(query, serviceFilter, function (client) {
 
   setInterval(function () {
     "use strict";

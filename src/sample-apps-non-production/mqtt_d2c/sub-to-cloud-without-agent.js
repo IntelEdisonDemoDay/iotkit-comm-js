@@ -1,8 +1,8 @@
 var path = require("path");
 
-var edisonLib = require('iecf');
+var iecf = require('iecf');
 
-var validator = new edisonLib.ServiceSpecValidator();
+var validator = new iecf.ServiceSpecValidator();
 validator.readServiceSpecFromFile("../serviceSpecs/IOTKitCloudBrokerSubOnly.json");
 
 validator.spec.comm_params.args.keyPath = path.resolve("../serviceSpecs/", validator.spec.comm_params.args.keyPath);
@@ -10,7 +10,7 @@ validator.spec.comm_params.args.certPath = path.resolve("../serviceSpecs/", vali
 
 var brokerSpec = validator.getValidatedSpec();
 
-edisonLib.createClientForGivenService(brokerSpec, function (client) {
+iecf.createClientForGivenService(brokerSpec, function (client) {
 
   client.comm.subscribe(brokerSpec.name + "/b8-e8-56-37-7a-55");
   client.comm.subscribe(brokerSpec.name + "/b8-e8-56-37-7a-33");

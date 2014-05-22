@@ -12,12 +12,12 @@
  *
  * Created by adua.
  */
-var edisonLib = require('iecf');
+var iecf = require('iecf');
 
-var validator = new edisonLib.ServiceSpecValidator();
+var validator = new iecf.ServiceSpecValidator();
 validator.readServiceSpecFromFile("./serviceSpecs/temperatureServiceZMQPUBSUB.json");
 
-edisonLib.createService(validator.getValidatedSpec(), function (service) {
+iecf.createService(validator.getValidatedSpec(), function (service) {
   "use strict";
 
   setInterval(function () {

@@ -31,12 +31,12 @@ describe('[browse-services]', function () {
   });
 
   it("should be able to find a service for the given query", function(done) {
-    var edisonLib = require('iecf');
+    var iecf = require('iecf');
 
-    var query = new edisonLib.ServiceQuery();
+    var query = new iecf.ServiceQuery();
     query.initServiceQueryFromFile(path.join(__dirname, "serviceQueries/mqtt-mini-broker-query.json"));
 
-    edisonLib.discoverServices(query, function (serviceSpec) {
+    iecf.discoverServices(query, function (serviceSpec) {
       "use strict";
       done();
     });

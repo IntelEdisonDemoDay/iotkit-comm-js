@@ -21,12 +21,12 @@
  * client queries for a service with the word 'minibroker' in its name.
  */
 
-var edisonLib = require('iecf');
+var iecf = require('iecf');
 
-var validator = new edisonLib.ServiceSpecValidator();
+var validator = new iecf.ServiceSpecValidator();
 validator.readServiceSpecFromFile("./serviceSpecs/mqtt-mini-broker-spec.json");
 
-edisonLib.createService(validator.getValidatedSpec(), function (service) {
+iecf.createService(validator.getValidatedSpec(), function (service) {
   "use strict";
 
   var clients = {};

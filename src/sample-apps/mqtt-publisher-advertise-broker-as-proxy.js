@@ -20,15 +20,15 @@
  * on the Edison, a local broker should already be running on port '1883'.
  */
 
-var edisonLib = require('iecf');
+var iecf = require('iecf');
 
-var validator = new edisonLib.ServiceSpecValidator();
+var validator = new iecf.ServiceSpecValidator();
 validator.readServiceSpecFromFile("./serviceSpecs/temperatureService-VIA-BROKER.json");
 var validatedSpec = validator.getValidatedSpec();
 
-edisonLib.advertiseService(validatedSpec);
+iecf.advertiseService(validatedSpec);
 
-edisonLib.createClientForGivenService(validatedSpec, function (client) {
+iecf.createClientForGivenService(validatedSpec, function (client) {
 
   setInterval(function () {
     "use strict";

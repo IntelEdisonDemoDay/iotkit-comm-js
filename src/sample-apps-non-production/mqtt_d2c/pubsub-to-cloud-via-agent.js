@@ -1,16 +1,16 @@
-var edisonLib = require('iecf');
+var iecf = require('iecf');
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-var validator = new edisonLib.ServiceSpecValidator();
+var validator = new iecf.ServiceSpecValidator();
 validator.readServiceSpecFromFile("../serviceSpecs/IOTKitAgent.json");
 var brokerSpec = validator.getValidatedSpec();
 
 var count;
 
-edisonLib.createClientForGivenService(brokerSpec, function (client) {
+iecf.createClientForGivenService(brokerSpec, function (client) {
   console.log("Publishing");
 
   setInterval(function () {

@@ -12,14 +12,14 @@
  *
  * Created by Pradeep.
  */
-var edisonLib = require('iecf');
+var iecf = require('iecf');
 
-var validator = new edisonLib.ServiceSpecValidator();
+var validator = new iecf.ServiceSpecValidator();
 validator.readServiceSpecFromFile("./serviceSpecs/temperatureServiceIoTKit.json");
 
 var i = 0;
 var msg = "";
-edisonLib.createClientForGivenService(validator.getValidatedSpec(), function (client) {
+iecf.createClientForGivenService(validator.getValidatedSpec(), function (client) {
     "use strict";
 
     // Register a Sensor by specifying its name and its type

@@ -22,19 +22,19 @@
  * a service see {@link sample-apps/mqtt-mini-broadcast-broker.js}
  */
 
-var edisonLib = require('iecf');
+var iecf = require('iecf');
 
-var query = new edisonLib.ServiceQuery();
+var query = new iecf.ServiceQuery();
 query.initServiceQueryFromFile("./serviceQueries/temperatureServiceQueryMQTT.json");
 
-edisonLib.discoverServices(query, function (serviceSpec) {
+iecf.discoverServices(query, function (serviceSpec) {
   "use strict";
 
   console.log("Found " + serviceSpec.type.name + " service at " +
     serviceSpec.address + ":" + serviceSpec.port + " on interface " +
     serviceSpec.networkInterface);
 
-  edisonLib.createClientForGivenService(serviceSpec, function (client) {
+  iecf.createClientForGivenService(serviceSpec, function (client) {
 
     client.comm.subscribe("mytopic");
 

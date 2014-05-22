@@ -24,12 +24,12 @@
  * and the broker specification's address and port field are preset to '127.0.0.1' and '1883'.
  */
 
-var edisonLib = require('iecf');
+var iecf = require('iecf');
 
-var validator = new edisonLib.ServiceSpecValidator();
+var validator = new iecf.ServiceSpecValidator();
 validator.readServiceSpecFromFile("./serviceSpecs/mqtt-broker-spec.json");
 
-edisonLib.createClientForGivenService(validator.getValidatedSpec(), function (client) {
+iecf.createClientForGivenService(validator.getValidatedSpec(), function (client) {
 
   client.comm.subscribe("mytopic");
 
