@@ -19,7 +19,7 @@ exports.run = function () {
   var edisonLib = require('edisonapi');
 
   var validator = new edisonLib.ServiceSpecValidator();
-  validator.readServiceSpecFromFile(path.join(__dirname, "serviceSpecs/temperatureServiceMQTT.json"));
+  validator.readServiceSpecFromFile(path.join(__dirname, "serviceSpecs/temperatureServiceMQTT-MINI-BROKER.json"));
 
   edisonLib.createService(validator.getValidatedSpec(), function (service) {
     "use strict";

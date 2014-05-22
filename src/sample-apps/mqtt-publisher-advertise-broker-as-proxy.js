@@ -13,17 +13,19 @@
  *
  * Created by adua.
  */
-var expect = require('chai').expect;
-var path = require('path');
+var edisonLib = require("edisonapi");
 
-describe('[service specification]', function () {
-    it("should validate a correct spec without throwing an error", function() {
-      var edisonLib = require('edisonapi');
+var validator = new edisonLib.ServiceSpecValidator();
+validator.readServiceSpecFromFile("./serviceSpecs/temperatureService-VIA-BROKER.json");
+var validatedSpec = validator.getValidatedSpec();
 
-      var validator = new edisonLib.ServiceSpecValidator();
-      validator.readServiceSpecFromFile(path.join(__dirname, "serviceSpecs/temperatureServiceMQTT-MINI-BROKER.json"));
-      var spec = validator.getValidatedSpec();
+edisonLib.advertiseService(validatedSpec);
 
-      expect(spec.name).to.be.a('string');
-    });
+edisonLib.createClientForGivenService(validatedSpec, function (client) {
+
+  setInterval(function () {
+    "use strict";
+    client.comm.send("my other message", {topic: "mytopic"});
+  }, 1000);
+
 });

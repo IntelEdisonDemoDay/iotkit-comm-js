@@ -16,7 +16,7 @@
 var edisonLib = require('edisonapi');
 
 var validator = new edisonLib.ServiceSpecValidator();
-validator.readServiceSpecFromFile("./serviceSpecs/temperatureServiceMQTT.json");
+validator.readServiceSpecFromFile("./serviceSpecs/temperatureServiceMQTT-MINI-BROKER.json");
 
 edisonLib.createService(validator.getValidatedSpec(), function (service) {
   "use strict";

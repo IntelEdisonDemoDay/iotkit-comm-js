@@ -15,10 +15,10 @@
  */
 var edisonLib = require("edisonapi");
 
-var query = new edisonLib.ServiceQuery();
-query.initServiceQueryFromFile("./serviceQueries/temperatureServiceQueryMQTT.json");
+var validator = new edisonLib.ServiceSpecValidator();
+validator.readServiceSpecFromFile("./serviceSpecs/temperatureServiceMQTTBROKER.json");
 
-edisonLib.createClient(query, serviceFilter, function (client) {
+edisonLib.createClientForGivenService(validator.getValidatedSpec(), function (client) {
 
   setInterval(function () {
     "use strict";
@@ -26,8 +26,3 @@ edisonLib.createClient(query, serviceFilter, function (client) {
   }, 1000);
 
 });
-
-function serviceFilter (serviceRecord) {
-    "use strict";
-    return true;
-}

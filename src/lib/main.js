@@ -74,3 +74,28 @@ exports.discoverServices = function (serviceQuery, serviceFoundCallback) {
 exports.createClientForGivenService = function (serviceSpec, clientCreatedCallback) {
   clientCreatedCallback(new Client(serviceSpec));
 };
+
+exports.advertiseService = function(serviceSpec) {
+  if (serviceSpec.address) {
+    dns.lookup(serviceSpec.address, 4, function (err, address, family) {
+      if (err) {
+        console.log(err);
+        throw err;
+      }
+
+      if (family != 4) {
+        console.log("WARN: Got IPv6 address even when IPv4 was requested. Waiting for an IPv4 address...");
+        return;
+      }
+
+      serviceSpec.address = address;
+      if (!serviceSpec.advertise || serviceSpec.advertise.locally) {
+        EdisonMDNS.advertiseService(serviceSpec);
+      }
+    });
+  } else {
+    if (!serviceSpec.advertise || serviceSpec.advertise.locally) {
+      EdisonMDNS.advertiseService(serviceSpec);
+    }
+  }
+}
