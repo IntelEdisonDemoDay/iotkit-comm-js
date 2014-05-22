@@ -8,6 +8,7 @@ This documentation focuses on the NodeJS version of the library. To begin develo
 
  #### Notes:
 
+* API documentation in under the "Modules" and "Classes" section on the right
+* Sample apps are documented and should be a great way to start for this release
 * {@tutorial cloud} support is in its infancy and maybe unstable.
 * Tutorials and high-level documentation is incomplete, but coming soon
-* API documentation is available: see the "Modules" and "Classes" section on the right
