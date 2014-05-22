@@ -5,3 +5,9 @@ two flavors: C and NodeJS.
 
 This documentation focuses on the NodeJS version of the library. To begin developing Edison applications and plugins
  please {@tutorial start-here}.
+
+ #### Notes:
+
+* {@tutorial cloud} support is in its infancy and maybe unstable.
+* Tutorials and high-level documentation is incomplete, but coming soon
+* API documentation is available: see the "Modules" and "Classes" section on the right
