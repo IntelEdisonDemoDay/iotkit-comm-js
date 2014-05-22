@@ -18,7 +18,7 @@
  * make sure the mini broker is running somewhere on the LAN.
  */
 
-var edisonLib = require("edisonapi");
+var edisonLib = require('iecf');
 
 var query = new edisonLib.ServiceQuery();
 query.initServiceQueryFromFile("./serviceQueries/mqtt-mini-broker-query.json");

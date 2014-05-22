@@ -1,6 +1,6 @@
 var path = require("path");
 
-var edisonLib = require("edisonapi");
+var edisonLib = require('iecf');
 
 var msgTemplate = {
   "msg_type": "metrics_msg",

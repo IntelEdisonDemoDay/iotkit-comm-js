@@ -15,7 +15,7 @@
 exports.run = function () {
   "use strict";
   var path = require('path');
-  var edisonLib = require('edisonapi');
+  var edisonLib = require('iecf');
 
   var validator = new edisonLib.ServiceSpecValidator();
   validator.readServiceSpecFromFile(path.join(__dirname, "serviceSpecs/mqtt-mini-broker-spec.json"));

@@ -22,7 +22,7 @@
  * a service see {@link sample-apps/mqtt-mini-broadcast-broker.js}
  */
 
-var edisonLib = require("edisonapi");
+var edisonLib = require('iecf');
 
 var query = new edisonLib.ServiceQuery();
 query.initServiceQueryFromFile("./serviceQueries/temperatureServiceQueryMQTT.json");

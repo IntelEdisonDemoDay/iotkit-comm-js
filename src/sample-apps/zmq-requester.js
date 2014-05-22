@@ -12,7 +12,7 @@
  *
  * Created by adua.
  */
-var edisonLib = require("edisonapi");
+var edisonLib = require('iecf');
 
 var query = new edisonLib.ServiceQuery();
 query.initServiceQueryFromFile("./serviceQueries/temperatureServiceQueryZMQREQREP.json");

@@ -21,7 +21,7 @@
  * running broker and the address and port fields of the specification file are set to '127.0.0.1' and '1883'.
  */
 
-var edisonLib = require("edisonapi");
+var edisonLib = require('iecf');
 
 var validator = new edisonLib.ServiceSpecValidator();
 validator.readServiceSpecFromFile("./serviceSpecs/mqtt-broker-spec.json");

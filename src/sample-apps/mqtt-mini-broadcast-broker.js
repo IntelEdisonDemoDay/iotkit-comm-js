@@ -21,7 +21,7 @@
  * client queries for a service with the word 'minibroker' in its name.
  */
 
-var edisonLib = require('edisonapi');
+var edisonLib = require('iecf');
 
 var validator = new edisonLib.ServiceSpecValidator();
 validator.readServiceSpecFromFile("./serviceSpecs/mqtt-mini-broker-spec.json");

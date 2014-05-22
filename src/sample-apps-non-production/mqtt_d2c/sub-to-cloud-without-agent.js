@@ -1,6 +1,6 @@
 var path = require("path");
 
-var edisonLib = require("edisonapi");
+var edisonLib = require('iecf');
 
 var validator = new edisonLib.ServiceSpecValidator();
 validator.readServiceSpecFromFile("../serviceSpecs/IOTKitCloudBrokerSubOnly.json");

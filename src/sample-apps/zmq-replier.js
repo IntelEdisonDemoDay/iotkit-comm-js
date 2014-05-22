@@ -12,7 +12,7 @@
  *
  * Created by adua.
  */
-var edisonLib = require('edisonapi');
+var edisonLib = require('iecf');
 
 var validator = new edisonLib.ServiceSpecValidator();
 validator.readServiceSpecFromFile("./serviceSpecs/temperatureServiceZMQREQREP.json");

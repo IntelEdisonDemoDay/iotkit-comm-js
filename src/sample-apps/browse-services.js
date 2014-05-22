@@ -21,7 +21,7 @@
  * will be returned in the serviceSpec argument of the callback to discoverServices
  * ({@tutorial service-spec}).
  */
-var edisonLib = require("edisonapi");
+var edisonLib = require('iecf');
 
 var query = new edisonLib.ServiceQuery();
 query.initServiceQueryFromFile("./serviceQueries/temperatureServiceQueryMQTT.json");

@@ -31,10 +31,10 @@ describe('[browse-services]', function () {
   });
 
   it("should be able to find a service for the given query", function(done) {
-    var edisonLib = require('edisonapi');
+    var edisonLib = require('iecf');
 
     var query = new edisonLib.ServiceQuery();
-    query.initServiceQueryFromFile(path.join(__dirname, "serviceQueries/temperatureServiceQueryMQTT.json"));
+    query.initServiceQueryFromFile(path.join(__dirname, "serviceQueries/mqtt-mini-broker-query.json"));
 
     edisonLib.discoverServices(query, function (serviceSpec) {
       "use strict";

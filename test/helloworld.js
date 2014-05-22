@@ -16,7 +16,7 @@ var expect = require('chai').expect;
 
 describe('[edisonlib installation]', function () {
   it("should verify if edison library is correctly installed", function() {
-    var edisonLib = require('edisonapi');
+    var edisonLib = require('iecf');
     expect(edisonLib.sayhello()).to.equal("Hello Edison user!");
   });
 });

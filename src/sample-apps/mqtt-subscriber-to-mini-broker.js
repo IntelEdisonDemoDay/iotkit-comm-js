@@ -19,7 +19,7 @@
  * (see {@link sample-apps/mqtt-publisher-to-mini-broker.js}) are running somewhere on the same LAN.
  */
 
-var edisonLib = require("edisonapi");
+var edisonLib = require('iecf');
 
 var query = new edisonLib.ServiceQuery();
 query.initServiceQueryFromFile("./serviceQueries/mqtt-mini-broker-query.json");

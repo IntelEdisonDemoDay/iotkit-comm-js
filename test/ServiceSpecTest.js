@@ -17,7 +17,7 @@ var path = require('path');
 
 describe('[service specification]', function () {
     it("should validate a correct spec without throwing an error", function() {
-      var edisonLib = require('edisonapi');
+      var edisonLib = require('iecf');
 
       var validator = new edisonLib.ServiceSpecValidator();
       validator.readServiceSpecFromFile(path.join(__dirname, "serviceSpecs/mqtt-mini-broker-spec.json"));

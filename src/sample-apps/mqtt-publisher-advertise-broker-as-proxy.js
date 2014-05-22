@@ -20,7 +20,7 @@
  * on the Edison, a local broker should already be running on port '1883'.
  */
 
-var edisonLib = require("edisonapi");
+var edisonLib = require('iecf');
 
 var validator = new edisonLib.ServiceSpecValidator();
 validator.readServiceSpecFromFile("./serviceSpecs/temperatureService-VIA-BROKER.json");
