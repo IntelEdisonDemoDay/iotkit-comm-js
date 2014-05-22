@@ -15,7 +15,7 @@
 var mqtt = require('mqtt');
 
 /**
- * Name of interface this plugin would like to adhere to ({@tutorial plugin})
+ * Name of interface ({@tutorial plugin-interface}) this plugin ({@tutorial plugin}) would like to adhere to
  * @type {string}
  */
 EdisonMQTTService.prototype.interface = "edison-service-interface";

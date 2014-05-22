@@ -1,5 +1,4 @@
-/**
- * <insert one-line description of what the program does>
+/*
  * Copyright (c) 2014, Intel Corporation.
  *
  * This program is free software; you can redistribute it and/or modify it
