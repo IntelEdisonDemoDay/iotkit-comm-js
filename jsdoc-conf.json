@@ -1,10 +1,10 @@
 {
   "source": {
-    "exclude": "src/sample-apps-non-production"
+    "exclude": ["example-non-production", "coverage", "node_modules"]
   },
   "opts": {
-    "destination": "docs/api/",
+    "destination": "doc/api/",
     "recurse": true,
-    "tutorials": "docs/tutorials"
+    "tutorials": "doc/tutorials"
   }
 }

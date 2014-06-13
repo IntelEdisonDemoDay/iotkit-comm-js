@@ -10,3 +10,7 @@ output/
 *.swp
 *.o
 docs/api
+doc/api
+coverage
+npm-debug.log
+node_modules
