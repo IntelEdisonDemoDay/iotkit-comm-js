@@ -1,15 +1,14 @@
 {
   "name": "iecf",
-  "version": "0.2.0",
+  "version": "0.1.0",
   "description": "The Intel Edison Connectivity Framework (IECF) allows Edison devices to discover and communicate with each other",
-  "main": "lib/main.js",
+  "main": "src/lib/main.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha -R Spec -t 3000 -S; echo Done.",
-    "gendocs": "./node_modules/.bin/jsdoc . -c jsdoc-conf.json README.md; echo Done.",
-    "coverage": "./node_modules/.bin/istanbul cover --report html node_modules/.bin/_mocha -- -R Spec -t 3000 -S; echo Done."
+    "test": "mocha",
+    "gendocs": "jsdoc . -c jsdoc-conf.json README.md"
   },
   "engines": {
-    "node": ">=0.10.28"
+    "node": ">=0.10.26"
   },
   "repository": "",
   "dependencies": {
@@ -20,8 +19,7 @@
   "devDependencies": {
     "chai": "*",
     "mocha": "*",
-    "jsdoc": "<=3.3.0",
-    "istanbul": "*"
+    "jsdoc": "<=3.3.0"
   },
   "keywords": [
     "distributed",
@@ -33,8 +31,8 @@
   "license": "LGPL",
   "readmeFilename": "README.md",
   "directories": {
-    "lib": "lib",
-    "doc": "doc",
-    "example": "example"
+    "lib": "src/lib",
+    "doc": "docs/api/index.html",
+    "example": "src/sample-apps"
   }
 }
