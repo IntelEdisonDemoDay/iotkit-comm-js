@@ -33,7 +33,7 @@ describe('[cloud]', function () {
       var iecf = require('iecf');
 
       var validator = new iecf.ServiceSpecValidator();
-      validator.readServiceSpecFromFile(path.join(__dirname, "../example/serviceSpecs/temperatureServiceIoTKit.json"));
+      validator.readServiceSpecFromFile(path.join(__dirname, "resources/serviceSpecs/1884-temp-service-iotkit.json"));
 
       var i = 0;
       var msg = "";
@@ -63,7 +63,7 @@ describe('[cloud]', function () {
       var iecf = require('iecf');
 
       var validator = new iecf.ServiceSpecValidator();
-      validator.readServiceSpecFromFile(path.join(__dirname, "../example/serviceSpecs/temperatureServiceIoTKit.json"));
+      validator.readServiceSpecFromFile(path.join(__dirname, "resources/serviceSpecs/1884-temp-service-iotkit.json"));
 
       var i = 0;
       var msg = "";
@@ -74,7 +74,6 @@ describe('[cloud]', function () {
 
         client.comm.setReceivedMessageHandler(function(message, context) {
           "use strict";
-          console.log(message);
           expect(message).to.be.a('string');
           done();
           client.comm.done();

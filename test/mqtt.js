@@ -26,24 +26,76 @@
  * @see {@link module:test/mqtt~discover_direct}
  * @see {@link module:test/mqtt~client_as_a_service}
  * @see {@link module:test/mqtt~subscribe_to_client_as_a_service}
+ * @see {@link module:test/mqtt~mqttMiniBroker}
  */
 
 var path = require('path');
-var spawn = require('child_process').spawn;
 var expect = require('chai').expect;
-
-var minibroker;
 
 describe('[mqtt]', function () {
 
+  /**
+   * @file A MQTT mini broker that is used for testing MQTT clients.
+   * @see {@link https://github.com/adamvr/MQTT.js}
+   * @see {@link module:test/mqtt~discover_publisher}
+   * @see {@link module:test/mqtt~discover_subscriber}
+   * @see {@link module:test/mqtt~discover_direct}
+   */
+  function mqttMiniBroker() {
+    var path = require('path');
+    var iecf = require('iecf');
+
+    var validator = new iecf.ServiceSpecValidator();
+    validator.readServiceSpecFromFile(path.join(__dirname, "resources/serviceSpecs/1889-mqtt-mini-broker-spec.json"));
+
+    iecf.createService(validator.getValidatedSpec(), function (service) {
+      "use strict";
+
+      var clients = {};
+
+      service.comm.setReceivedMessageHandler(function(client, msg, context) {
+        "use strict";
+        switch (context.event) {
+          case 'connect':
+            clients[msg.clientId] = client;
+            service.comm.sendTo(client, msg, {ack: 'connack'});
+            break;
+          case 'publish':
+            for (var clientId in clients) {
+              if (!clients.hasOwnProperty(clientId))
+                continue;
+              service.comm.sendTo(clients[clientId], msg);
+            }
+            break;
+          case 'subscribe':
+            service.comm.sendTo(client, msg, {ack: 'suback'});
+            break;
+          case 'close':
+            for (var clientId in clients) {
+              if (!clients.hasOwnProperty(clientId))
+                continue;
+              if (clients[clientId] == client) {
+                delete clients[clientId];
+              }
+            }
+            break;
+          case 'pingreq':
+            service.comm.sendTo(client, msg, {ack: 'pingresp'});
+            break;
+          case 'disconnect':
+          case 'error':
+            service.comm.manageClient(client, {action: 'endstream'});
+            break;
+          default:
+            console.log(context.event);
+        }
+      });
+    });
+  }
+
   before(function () {
     "use strict";
-    minibroker = spawn('node', [path.join(__dirname, '../example/mqtt-mini-broadcast-broker.js')]);
-  });
-
-  after(function() {
-    "use strict";
-    minibroker.kill();
+    mqttMiniBroker();
   });
 
   describe('#direct', function () {
@@ -61,7 +113,7 @@ describe('[mqtt]', function () {
         var iecf = require('iecf');
 
         var validator = new iecf.ServiceSpecValidator();
-        validator.readServiceSpecFromFile(path.join(__dirname, "../example/serviceSpecs/mqtt-broker-spec.json"));
+        validator.readServiceSpecFromFile(path.join(__dirname, "resources/serviceSpecs/1883-mqtt-broker-spec.json"));
 
         iecf.createClientForGivenService(validator.getValidatedSpec(), function (client) {
           setInterval(function () {
@@ -86,7 +138,7 @@ describe('[mqtt]', function () {
         var iecf = require('iecf');
 
         var validator = new iecf.ServiceSpecValidator();
-        validator.readServiceSpecFromFile(path.join(__dirname, "../example/serviceSpecs/mqtt-broker-spec.json"));
+        validator.readServiceSpecFromFile(path.join(__dirname, "resources/serviceSpecs/1883-mqtt-broker-spec.json"));
 
         iecf.createClientForGivenService(validator.getValidatedSpec(), function (client) {
 
@@ -119,7 +171,7 @@ describe('[mqtt]', function () {
         var iecf = require('iecf');
 
         var query = new iecf.ServiceQuery();
-        query.initServiceQueryFromFile(path.join(__dirname, "../example/serviceQueries/mqtt-mini-broker-query.json"));
+        query.initServiceQueryFromFile(path.join(__dirname, "resources/serviceQueries/mqtt-mini-broker-query.json"));
 
         // explicitly discover service first. This can be skipped; see other tests that show
         // how to discover and connect automatically.
@@ -176,7 +228,7 @@ describe('[mqtt]', function () {
         var iecf = require('iecf');
 
         var query = new iecf.ServiceQuery();
-        query.initServiceQueryFromFile(path.join(__dirname, "../example/serviceQueries/mqtt-mini-broker-query.json"));
+        query.initServiceQueryFromFile(path.join(__dirname, "resources/serviceQueries/mqtt-mini-broker-query.json"));
 
         iecf.createClient(query, serviceFilter, function (client) {
           setInterval(function () {
@@ -204,7 +256,7 @@ describe('[mqtt]', function () {
         var iecf = require('iecf');
 
         var query = new iecf.ServiceQuery();
-        query.initServiceQueryFromFile(path.join(__dirname, "../example/serviceQueries/mqtt-mini-broker-query.json"));
+        query.initServiceQueryFromFile(path.join(__dirname, "resources/serviceQueries/mqtt-mini-broker-query.json"));
 
         iecf.createClient(query, serviceFilter, function (client) {
 
@@ -243,7 +295,7 @@ describe('[mqtt]', function () {
 
         var validator = new iecf.ServiceSpecValidator();
         validator.readServiceSpecFromFile(
-          path.join(__dirname, "../example/serviceSpecs/temperatureService-VIA-BROKER.json"));
+          path.join(__dirname, "resources/serviceSpecs/1883-temp-service-via-broker.json"));
         var validatedSpec = validator.getValidatedSpec();
 
         iecf.advertiseService(validatedSpec);
@@ -271,7 +323,7 @@ describe('[mqtt]', function () {
 
         var query = new iecf.ServiceQuery();
         query.initServiceQueryFromFile(
-          path.join(__dirname, "../example/serviceQueries/temperatureServiceQueryMQTT.json"));
+          path.join(__dirname, "resources/serviceQueries/temp-service-query-mqtt.json"));
 
         iecf.createClient(query, serviceFilter, function (client) {
           client.comm.subscribe(client.spec.name);

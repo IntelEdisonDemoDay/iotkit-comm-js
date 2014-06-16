@@ -30,7 +30,7 @@ describe('[spec]', function () {
       var iecf = require('iecf');
 
       var validator = new iecf.ServiceSpecValidator();
-      validator.readServiceSpecFromFile(path.join(__dirname, "../example/serviceSpecs/mqtt-mini-broker-spec.json"));
+      validator.readServiceSpecFromFile(path.join(__dirname, "resources/serviceSpecs/1889-mqtt-mini-broker-spec.json"));
       var spec = validator.getValidatedSpec();
 
       expect(spec.name).to.be.a('string');

@@ -19,26 +19,67 @@
  * or replier) and then interacts with it.
  * @see {@link module:test/zmq~subscriber}
  * @see {@link module:test/zmq~requester}
+ * @see {@link module:test/zmq~publisher}
+ * @see {@link module:test/zmq~replier}
  */
 
 var path = require('path');
 var spawn = require('child_process').spawn;
 var expect = require('chai').expect;
 
-var zmqpublisher, zmqreplier;
-
 describe('[zmq]', function () {
 
-  before(function () {
-    "use strict";
-    zmqpublisher = spawn('node', [path.join(__dirname, '../example/zmq-publisher.js')]);
-    zmqreplier = spawn('node', [path.join(__dirname, '../example/zmq-replier.js')]);
-  });
+  /**
+   * ZMQ service that publishes data on topic "mytopic". Used to test
+   * a ZMQ subscriber.
+   * @see {@link http://zeromq.org}
+   * @see {@link module:test/zmq~subscriber}
+   */
+  function publisher() {
+    var iecf = require('iecf');
+    var path = require('path');
 
-  after(function() {
-    "use strict";
-    zmqpublisher.kill();
-    zmqreplier.kill();
+    var validator = new iecf.ServiceSpecValidator();
+    validator.readServiceSpecFromFile(path.join(__dirname, "resources/serviceSpecs/1885-temp-service-zmq-pubsub.json"));
+
+    iecf.createService(validator.getValidatedSpec(), function (service) {
+      "use strict";
+
+      setInterval(function () {
+        "use strict";
+        service.comm.publish("mytopic: my message", {});
+      }, 300);
+
+    });
+  }
+
+  /**
+   * ZMQ service that replies to requests. Used to test
+   * a ZMQ requester. Any request string results in the reply "hi"
+   * @see {@link http://zeromq.org}
+   * @see {@link module:test/zmq~replier}
+   */
+  function replier() {
+    var iecf = require('iecf');
+    var path = require('path');
+
+    var validator = new iecf.ServiceSpecValidator();
+    validator.readServiceSpecFromFile(path.join(__dirname, "resources/serviceSpecs/8333-temp-service-zmq-reqrep.json"));
+
+    iecf.createService(validator.getValidatedSpec(), function (service) {
+      "use strict";
+
+      service.comm.setReceivedMessageHandler(function(client, msg, context) {
+        "use strict";
+        service.comm.sendTo(client, "hi");
+      });
+
+    });
+  }
+
+  before(function () {
+    publisher();
+    replier();
   });
 
   // The mdns browser returns all new services it finds. This means, that once it
@@ -61,7 +102,7 @@ describe('[zmq]', function () {
         var iecf = require('iecf');
 
         var query = new iecf.ServiceQuery();
-        query.initServiceQueryFromFile(path.join(__dirname, "../example/serviceQueries/temperatureServiceQueryZMQPUBSUB.json"));
+        query.initServiceQueryFromFile(path.join(__dirname, "resources/serviceQueries/temp-service-query-zmq-pubsub.json"));
 
         iecf.createClient(query, serviceFilter, function (client) {
           "use strict";
@@ -98,7 +139,7 @@ describe('[zmq]', function () {
       var iecf = require('iecf');
 
       var query = new iecf.ServiceQuery();
-      query.initServiceQueryFromFile(path.join(__dirname, "../example/serviceQueries/temperatureServiceQueryZMQREQREP.json"));
+      query.initServiceQueryFromFile(path.join(__dirname, "resources/serviceQueries/temp-service-query-zmq-reqrep.json"));
 
       iecf.createClient(query, serviceFilter, function (client) {
         "use strict";

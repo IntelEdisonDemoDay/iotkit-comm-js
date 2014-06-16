@@ -30,7 +30,7 @@ describe('[query]', function () {
     var iecf = require('iecf');
 
     var query = new iecf.ServiceQuery();
-    query.initServiceQueryFromFile(path.join(__dirname, "../example/serviceQueries/mqtt-mini-broker-query.json"));
+    query.initServiceQueryFromFile(path.join(__dirname, "resources/serviceQueries/mqtt-mini-broker-query.json"));
 
     expect(query.rawQuery.name).to.be.a('string');
   });
