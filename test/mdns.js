@@ -13,12 +13,11 @@
  * Created by adua.
  */
 
-/** @module test/mdns */
-
 /**
- * @file Tests mdns service discovery and advertisement.
- * @see {@link module:test/mdns~browse}
- * @see {@link module:test/mdns~browse_connect}
+ * Tests mdns service discovery and advertisement.
+ * @module test/mdns
+ * @see {@link module:test/mdns~discover}
+ * @see {@link module:test/mdns~discover_connect}
  * @see {@link module:test/mdns~dummyService}
  */
 
@@ -29,8 +28,9 @@ describe('[mdns]', function () {
   /**
    * Dummy service to test mdns service discovery and advertisement. This service is a mini MQTT broadcast
    * broker.
-   * @see {@link module:test/mdns~browse}
-   * @see {@link module:test/mdns~browse_connect}
+   * @see {@link module:test/mdns~discover}
+   * @see {@link module:test/mdns~discover_connect}
+   * @function module:test/mdns~dummyService
    */
   function dummyService () {
     var path = require('path');
@@ -97,11 +97,11 @@ describe('[mdns]', function () {
     iecf.stopDiscoveringServices();
   });
 
-  describe('#browse', function () {
+  describe('#discover', function () {
     /**
      * Tests if a service can be found on the LAN. Expects a dummy service to be running on the LAN
      * and advertising itself. So this test actually tests both advertising and discovery.
-     * @function module:test/mdns~browse
+     * @function module:test/mdns~discover
      */
     it("should be able to find a service for the given query", function(done) {
       var iecf = require('iecf');
@@ -116,14 +116,14 @@ describe('[mdns]', function () {
     });
   });
 
-  describe('#browse-connect', function () {
+  describe('#discover-connect', function () {
     /**
      * Tests if a service can be found and connected to on the LAN. Expects a dummy service to be
      * running on the LAN and advertising itself. Notice that in IECF, no explicit IP
      * addresses or protocol specific code is needed to connect to a service. Connecting to a service of
      * a given type requires only that the service query mention that type.
-     * @function module:test/mdns~browse_connect
-     * @see {@tutorial service-query}
+     * @function module:test/mdns~discover_connect
+     * @see {@tutorial service-spec-query}
      */
     it("should be able to find a service for the given query and connect to it", function(done) {
       var iecf = require('iecf');

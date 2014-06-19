@@ -6,5 +6,6 @@
     "destination": "doc/api/",
     "recurse": true,
     "tutorials": "doc/tutorials"
-  }
+  },
+  "plugins": [ "plugins/markdown" ]
 }

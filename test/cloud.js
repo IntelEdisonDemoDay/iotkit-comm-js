@@ -11,11 +11,9 @@
  * more details.
  */
 
-/** @module test/cloud */
-
 /**
- * @file Tests interaction (authentication, data publication etc.) with the
- * cloud.
+ * Tests interaction (authentication, data publication etc.) with the cloud.
+ * @module test/cloud
  * @see {@link module:test/cloud~publish|test publishing data to cloud}
  * @see {@link module:test/cloud~subscribe|test subscribing to data from cloud}
  */

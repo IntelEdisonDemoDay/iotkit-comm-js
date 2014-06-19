@@ -11,10 +11,11 @@
  * more details.
  */
 
-/** @module test/spec */
+/**  */
 
 /**
- * @file Tests if a service specification is correctly validated
+ * Tests if a service specification is correctly validated
+ * @module test/query
  * @see {@link module:test/spec~wellformed|test well-formed service specification}
  */
 

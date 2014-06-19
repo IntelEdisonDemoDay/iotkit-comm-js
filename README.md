@@ -1,14 +1,24 @@
-The Intel Edison Connectivity Framework (IECF) allows one Edison to discover and communicate with other Edisons.
-Additionally, IECF allows an Edison to conveniently publish its data to the cloud and enables other Edisons to
-subscribe to that data. The IECF is a library that comes pre-installed on the Edison board in
-two flavors: C and node.js.
+**{@tutorial start-here}** to begin developing applications and plugins that use the iecf (Intel Edison
+Connectivity Framework) library. Otherwise, continue reading to learn more.
 
-This documentation focuses on the NodeJS version of the library. To begin developing Edison applications and plugins
- please {@tutorial start-here}.
+iecf (Intel Edison Connectivity Framework) allows network-connected devices to conveniently discover and communicate
+with each other and the cloud. More specifically, the iecf library enables developers to write distributed
+applications composed of clients, servers, and peers (both client and server in one). It was designed primarily for
+the Intel Edison platform, but works just as well on other platforms. The iecf is a library that comes in two
+flavors: C and node.js. This documentation focuses on the node.js version of the library.
 
- #### Notes:
+#### How to read this documentation
 
-* API documentation is under the "Modules" and "Classes" section on the right
-* Sample apps are documented and should be a great way to start for this release
-* {@tutorial cloud} support is in its infancy and maybe unstable.
-* Tutorials and high-level documentation is incomplete, but coming soon
+There are two entry points:
+* For browsing the API reference, the entry point is the 'Modules' section (we suggest starting with the {@link
+module:main|'main'} module).
+* For tutorials on how to use the API, the entry point is the 'Tutorials' section (we suggest starting with the
+'{@tutorial start-here}' tutorial).
+
+*Note: for the purposes of this documentation, a module is a logical grouping of classes, methods,
+and variables. Please be aware that this is the **logical structure of the documentation only**
+and not the iecf codebase.*
+
+#### Prerequisites
+
+The iecf library is supported only on the Edison platform *(support for other platforms coming soon)*.

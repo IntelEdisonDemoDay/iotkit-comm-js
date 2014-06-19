@@ -11,12 +11,13 @@
  * more details.
  */
 
-/** @module test/zmq */
+/**  */
 
 /**
- * @file Tests the zmq plugin using various clients. Clients are either subscribers in the zmq pub/sub model
+ * Tests the zmq plugin using various clients. Clients are either subscribers in the zmq pub/sub model
  * or requesters in the zmq req/rep model. In each case the client first discovers the service (a publisher
  * or replier) and then interacts with it.
+ * @module test/zmq
  * @see {@link module:test/zmq~subscriber}
  * @see {@link module:test/zmq~requester}
  * @see {@link module:test/zmq~publisher}

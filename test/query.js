@@ -11,10 +11,9 @@
  * more details.
  */
 
-/** @module test/query */
-
 /**
- * @file Tests if a service query is correctly validated
+ * Tests if a service query is correctly validated
+ * @module test/query
  * @see {@link module:test/query~wellformed|test well-formed service query}
  */
 

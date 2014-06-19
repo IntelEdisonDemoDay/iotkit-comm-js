@@ -11,14 +11,13 @@
  * more details.
  */
 
-/** @module test/mqtt */
-
 /**
- * @file Tests the mqtt plugin using various clients. The clients assume that an mqtt broker already exists. For this
+ * Tests the mqtt plugin using various clients. The clients assume that an mqtt broker already exists. For this
  * test suite, the mosquitto broker and a mini broker built using the iecf library is used. The suite features clients
  * that connect directly to a broker at a known address, clients that discover a broker and connect to it, and clients
  * that connect to a broker that is being used as a proxy by another client (essentially this client is acting like a
  * service by using the broker as a proxy).
+ * @module test/mqtt
  * @see {@link module:test/mqtt~direct_publisher}
  * @see {@link module:test/mqtt~direct_subscriber}
  * @see {@link module:test/mqtt~discover_publisher}
@@ -33,9 +32,8 @@ var path = require('path');
 var expect = require('chai').expect;
 
 describe('[mqtt]', function () {
-
   /**
-   * @file A MQTT mini broker that is used for testing MQTT clients.
+   * A MQTT mini broker that is used for testing MQTT clients.
    * @see {@link https://github.com/adamvr/MQTT.js}
    * @see {@link module:test/mqtt~discover_publisher}
    * @see {@link module:test/mqtt~discover_subscriber}
@@ -105,7 +103,7 @@ describe('[mqtt]', function () {
      * file {@link example/serviceSpecs/mqtt-borker-spec.json} has the address and port fields
      * correctly set. No changes are needed if this program is run on the Edison. Each Edison comes with a
      * running broker and the address and port fields of the specification file are set to '127.0.0.1' and '1883'
-     * (see {@tutorial service-spec}).
+     * (see {@tutorial service-spec-query}).
      * @function module:test/mqtt~direct_publisher
      */
     it("should successfully publish to mosquitto broker",
@@ -130,7 +128,7 @@ describe('[mqtt]', function () {
      * file {@link example/serviceSpecs/mqtt-borker-spec.json} has the address and port fields
      * correctly set. No changes are needed if this program is run on the Edison. Each Edison comes with a
      * running broker and the address and port fields of the specification file are set to '127.0.0.1' and '1883'
-     * (see {@tutorial service-spec}).
+     * (see {@tutorial service-spec-query}).
      * @function module:test/mqtt~direct_subscriber
      */
     it("should successfully subscribe to data from mosquitto broker",
@@ -159,8 +157,8 @@ describe('[mqtt]', function () {
   describe('#discover_direct', function () {
     /**
      * Shows how to find and connect to an MQTT service or broker running on the LAN. Uses single client. First,
-     * call discoverServices with the appropriate service query ({@tutorial service-query}) and then
-     * call createClientForGivenService with the found service specification ({@tutorial service-spec}).
+     * call discoverServices with the appropriate service query ({@tutorial service-spec-query}) and then
+     * call createClientForGivenService with the found service specification ({@tutorial service-spec-query}).
      * The preconditions are that a network connections exists, that an MQTT service (or broker) is running
      * on the LAN, and that the service is advertising appropriate service information. To run a sample of such
      * a service see {@link example/mqtt-mini-broadcast-broker.js}

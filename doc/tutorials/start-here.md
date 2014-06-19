@@ -1,63 +1,67 @@
-To start working with the IECF node.js library you will need to:
+To start working with the iecf library, you will need to:
 
-  1. Setup the Edison board
-  2. Setup the IECF library
-  3. Run a sample program (just to make sure IECF is correctly configured)
+  1. Install it
+  2. Write a "hello world" program (optional)
+  3. Run a sample program (optional)
+  4. Learn more (optional)
 
-### Setup the Edison board
+### Install it
 
-From the perspective of the IECF library, an Edison board is setup when you can log into it from your PC using `ssh`
-and successfully reach an Internet service via WiFi. The relevant instructions can be found at:
+No installation is required on the Edison device *(support for other platforms coming soon)*.
 
-  1. {@tutorial connecting-to-pc}
-  2. {@tutorial wifi-setup}
+### Write a "hello world" program
 
-### Setup the IECF library
-
-Login to the Edison using `ssh` from a terminal application. Then, to setup the IECF library do the following:
+`helloworld.js`:
 
 ```
-mkdir ~/edisonapps
-cd ~/edisonapps
-npm link iecf
+var iecf = require('iecf');
+console.log(iecf.sayhello());
 ```
 
-We have assumed above, that you will be working in the `~/edisonapps` directory. However,
-this is not a requirement.
+Then, in a terminal:
+
+```bash
+node helloworld.js
+```
 
 ### Run a sample program
 
-To run a sample program provided with the library, do the following in an `ssh` terminal session established with the
-Edison board:
+On the Edison device, iecf sample programs can be found in `/usr/share/iecf-js/examples`. On
+other platforms, they should most likely be in `/usr/local/lib/node_modules/iecf/example`. Here is how you
+run the distributed thermostat sample application included in the iecf sources:
 
-```
-cd ~/edisonapps
-cp -r node_modules/iecf/src/sample-apps .
-cd sample-apps
-node zmq-publisher.js
-```
-
-Then, in another `ssh` terminal:
-
-```
-cd ~/edisonapps/sample-apps
-node zmq-subscriber.js
+```bash
+$ cd path-to-examples-directory # see above
+$ node temperature-sensor.js
 ```
 
-In the `zmq-subscriber` terminal, you should see output like this:
+Then, in another terminal:
 
 ```
-{ event: 'message' }
-mytopic: my message
-{ event: 'message' }
-mytopic: my message
-{ event: 'message' }
-mytopic: my message
+$ cd path-to-examples-directory
+$ node thermostat.js
 ```
 
-Note: the order in which the publisher and subscriber are run is not important.
+In the `thermostat.js` terminal, you should see output like this:
 
-### Next Steps
+```
+Found new temperature sensor - 127.0.0.1:32692
+Received sample temperature 84 from 127.0.0.1:32692
+New average ambient temperature (cumulative): 42
+Received sample temperature 89 from 127.0.0.1:32692
+New average ambient temperature (cumulative): 57.666666666666664
+Received sample temperature 62 from 127.0.0.1:32692
+New average ambient temperature (cumulative): 58.75
+```
+You can run multiple instances of 'temperature-sensor.js'; the thermostat will find those sensors and
+include their temperature data in the mean.
 
-Now that the IECF library is setup and you can run sample programs, its time to [write one of your own]{@tutorial
-edison-apps}. Of course, feel free to browse through the rest of the sample programs in `~/edisonapps/sample-apps`.
+### Learn More
+
+1. Write a [server]{@tutorial service}
+1. Write a [client]{@tutorial client}
+1. Understand [service specifications and queries]{@tutorial service-spec-query} **(important)**
+1. Learn to write a [distributed application]{@tutorial apps} using iecf
+1. Learn to publish data to the [cloud]{@tutorial cloud} and subscribe to it
+1. Study the unit tests included in the iecf sources *(coming soon)*
+1. Understand the iecf architecture *(coming soon)*

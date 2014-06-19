@@ -11,15 +11,15 @@
  * more details.
  */
 
-/** @module test/install */
-
 /**
- * @file Tests if the Edison library is correctly installed. File is named
+ * Tests if the Edison library is correctly installed. File is named
  * aaa-install.js so that when the test runner ('mocha') sorts test files, this
  * one will be run first. If any test in this suite fails, please ignore errors
  * in the rest of the tests.
+ * @module test/install
  * @see module:test/install~configuration
  */
+
 var expect = require('chai').expect;
 
 describe('[install]', function () {
