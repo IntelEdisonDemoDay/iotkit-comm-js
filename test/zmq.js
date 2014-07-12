@@ -89,7 +89,6 @@ describe('[zmq]', function () {
   // service browser for each test.
   beforeEach(function() {
     var iecf = require('iecf');
-    iecf.stopDiscoveringServices();
   });
 
   describe('#subscriber', function () {

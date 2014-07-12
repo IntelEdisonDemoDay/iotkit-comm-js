@@ -173,7 +173,8 @@ describe('[mqtt]', function () {
 
         // explicitly discover service first. This can be skipped; see other tests that show
         // how to discover and connect automatically.
-        iecf.discoverServices(query, function (serviceSpec) {
+        var serviceDirectory = new iecf.ServiceDirectory();
+        serviceDirectory.discoverServices(query, null, function (serviceSpec) {
           "use strict";
 
           // once service has been discovered, connect to it
@@ -212,7 +213,6 @@ describe('[mqtt]', function () {
     // service browser for each test.
     beforeEach(function() {
       var iecf = require('iecf');
-      iecf.stopDiscoveringServices();
     });
 
     /**
@@ -287,7 +287,7 @@ describe('[mqtt]', function () {
      * Note: on the Edison, a local broker should already be running on port '1883'.
      * @function module:test/mqtt~client_as_a_service
      */
-    it("should allow a client to act like a server by advertising the broker as a proxy",
+    it("should allow a client to act like a service by advertising the broker (proxies for client)",
       function(done) {
         var iecf = require('iecf');
 
@@ -296,7 +296,8 @@ describe('[mqtt]', function () {
           path.join(__dirname, "resources/serviceSpecs/1883-temp-service-via-broker.json"));
         var validatedSpec = validator.getValidatedSpec();
 
-        iecf.advertiseService(validatedSpec);
+        var serviceDirectory = new iecf.ServiceDirectory();
+        serviceDirectory.advertiseService(validatedSpec);
 
         iecf.createClientForGivenService(validatedSpec, function (client) {
           setInterval(function () {
@@ -314,8 +315,7 @@ describe('[mqtt]', function () {
      * @function module:test/mqtt~subscribe_to_client_as_a_service
      * @see {@link module:test/mqtt~client_as_a_service}
      */
-    it("should allow a client to subscribe to data from another client acting as a service by advertising the " +
-      "broker as its proxy",
+    it("should allow a client to subscribe to data from a client acting as a service (broker is proxying)",
       function (done) {
         var iecf = require('iecf');
 

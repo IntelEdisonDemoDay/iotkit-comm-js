@@ -94,7 +94,6 @@ describe('[mdns]', function () {
   // service browser for each test.
   beforeEach(function() {
     var iecf = require('iecf');
-    iecf.stopDiscoveringServices();
   });
 
   describe('#discover', function () {
@@ -109,8 +108,8 @@ describe('[mdns]', function () {
       var query = new iecf.ServiceQuery();
       query.initServiceQueryFromFile(path.join(__dirname, "resources/serviceQueries/dummy-service-query.json"));
 
-      iecf.discoverServices(query, function (serviceSpec) {
-        "use strict";
+      var serviceDirectory = new iecf.ServiceDirectory();
+      serviceDirectory.discoverServices(query, null, function (serviceSpec) {
         done();
       });
     });
@@ -131,7 +130,8 @@ describe('[mdns]', function () {
       var query = new iecf.ServiceQuery();
       query.initServiceQueryFromFile(path.join(__dirname, "resources/serviceQueries/dummy-service-query.json"));
 
-      iecf.discoverServices(query, function (serviceSpec) {
+      var serviceDirectory = new iecf.ServiceDirectory();
+      serviceDirectory.discoverServices(query, null, function (serviceSpec) {
         "use strict";
         iecf.createClientForGivenService(serviceSpec, function (client) {
 
