@@ -34,7 +34,7 @@ describe('[customComm]', function () {
   function customCommService() {
     // read service specification
     var iecf = require('iecf');
-    var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/serviceSpecs/9888-service-custom-comm.json"));
+    var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/9888-service-custom-comm.json"));
 
     // create service
     var net = require('net');
@@ -67,7 +67,7 @@ describe('[customComm]', function () {
     function (done) {
       var iecf = require('iecf');
       var serviceDirectory = new iecf.ServiceDirectory();
-      var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceQueries/service-query-custom-comm.json"));
+      var query = new iecf.ServiceQuery(path.join(__dirname, "resources/queries/service-query-custom-comm.json"));
       serviceDirectory.discoverServices(query, function (serviceSpec) {
         var net = require('net');
         var client = net.connect({port: serviceSpec.port, host: serviceSpec.address},

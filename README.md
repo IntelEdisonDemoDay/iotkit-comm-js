@@ -21,4 +21,6 @@ and not the iecf codebase.*
 
 #### Prerequisites
 
-The iecf library is supported only on the Edison platform *(support for other platforms coming soon)*.
+This document assumes that:
+1. Your Edison has Internet access
+1. The included sample programs and commands are run on the Edison

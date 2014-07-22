@@ -37,7 +37,7 @@ describe('[zmq]', function () {
     var iecf = require('iecf');
     var path = require('path');
 
-    var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/serviceSpecs/1885-temp-service-zmq-pubsub.json"));
+    var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/1885-temp-service-zmq-pubsub.json"));
     iecf.createService(spec, function (service) {
       "use strict";
 
@@ -59,7 +59,7 @@ describe('[zmq]', function () {
     var iecf = require('iecf');
     var path = require('path');
 
-    var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/serviceSpecs/8333-temp-service-zmq-reqrep.json"));
+    var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/8333-temp-service-zmq-reqrep.json"));
     iecf.createService(spec, function (service) {
       "use strict";
 
@@ -93,7 +93,7 @@ describe('[zmq]', function () {
     it("should successfully subscribe to messages from ZMQ publisher",
       function(done) {
         var iecf = require('iecf');
-        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceQueries/temp-service-query-zmq-pubsub.json"));
+        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/queries/temp-service-query-zmq-pubsub.json"));
         iecf.createClient(query, function (client) {
             "use strict";
 
@@ -125,7 +125,7 @@ describe('[zmq]', function () {
      */
     it("should successfully receive reply from a ZMQ replier", function(done) {
       var iecf = require('iecf');
-      var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceQueries/temp-service-query-zmq-reqrep.json"));
+      var query = new iecf.ServiceQuery(path.join(__dirname, "resources/queries/temp-service-query-zmq-reqrep.json"));
       iecf.createClient(query,
         function (client) {
           client.comm.setReceivedMessageHandler(function(message, context) {

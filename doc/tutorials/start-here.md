@@ -62,6 +62,6 @@ include their temperature data in the mean.
 1. Write a [client]{@tutorial client}
 1. Understand [service specifications and queries]{@tutorial service-spec-query} **(important)**
 1. Learn to write a [distributed application]{@tutorial apps} using iecf
-1. Learn to publish data to the [cloud]{@tutorial cloud} and subscribe to it
+1. Learn to publish data to the [cloud]{@tutorial cloud}
 1. Study the unit tests included in the iecf sources *(coming soon)*
 1. Understand the iecf architecture *(coming soon)*

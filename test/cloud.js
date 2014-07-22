@@ -32,9 +32,9 @@ describe('[cloud]', function () {
     it("should successfully publish data to the cloud", function(done) {
       var iecf = require('iecf');
 
-      var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/serviceSpecs/1884-temp-service-iotkit.json"));
+      var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/1884-temp-service-enableiot-cloud.json"));
 
-      var i = 0;
+      var i = 68;
       var msg = "";
       iecf.createClient(spec, function (client) {
         "use strict";
@@ -44,9 +44,8 @@ describe('[cloud]', function () {
 
         setInterval(function () {
           "use strict";
-          i ++;
           msg = {"n": "garage","v": i};
-          client.comm.send(JSON.stringify(msg), {"topic": "data"} );
+          client.comm.publish(JSON.stringify(msg));
         }, 500);
 
         done();
@@ -54,14 +53,14 @@ describe('[cloud]', function () {
     });
   });
 
-  describe('[subscribe]', function () {
+  describe.skip('[subscribe]', function () {
     /**
      * @function module:test/cloud~subscribe
      */
     it("should successfully subscribe to data from the cloud", function(done) {
       var iecf = require('iecf');
 
-      var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/serviceSpecs/1884-temp-service-iotkit.json"));
+      var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/1884-temp-service-enableiot-cloud.json"));
       var i = 0;
       var msg = "";
       iecf.createClient(spec, function (client) {
@@ -71,7 +70,8 @@ describe('[cloud]', function () {
 
         client.comm.setReceivedMessageHandler(function(message, context) {
           "use strict";
-          expect(message).to.be.a('string');
+          var msgobj = JSON.parse(message);
+          expect(msgobj.data[0].value).to.equal('12345');
           done();
           client.comm.done();
         });

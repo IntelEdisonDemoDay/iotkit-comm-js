@@ -4,7 +4,7 @@
   "description": "The Intel Edison Connectivity Framework (IECF) allows Edison devices to conveniently discover and communicate with each other and the cloud",
   "main": "lib/main.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha -R Spec -t 3000 -S; echo Done.",
+    "test": "./node_modules/.bin/mocha -R spec -t 3000 -S; echo Done.",
     "test-list": "./node_modules/.bin/mocha -R doc -t 3000 -S > test-list.html; echo Done.",
     "docs": "./node_modules/.bin/jsdoc . -c jsdoc-conf.json README.md; echo Done.",
     "coverage": "./node_modules/.bin/istanbul cover --report html node_modules/.bin/_mocha -- -R Spec -t 3000 -S; echo Done."

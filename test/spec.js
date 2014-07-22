@@ -27,7 +27,16 @@ describe('[spec]', function () {
      */
     it("should validate a correct spec without throwing an error", function() {
       var iecf = require('iecf');
-      var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/serviceSpecs/1889-mqtt-mini-broker-spec.json"));
+      var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/1889-mqtt-mini-broker-spec.json"));
       expect(spec.name).to.be.a('string');
+    });
+
+    it("should fail if a query contains both address and port", function(done) {
+      var iecf = require('iecf');
+      try {
+        var spec = new iecf.ServiceQuery(path.join(__dirname, "resources/specs/1883-mqtt-broker-spec.json"));
+      } catch (err) {
+        done();
+      }
     });
 });

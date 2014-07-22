@@ -10,12 +10,16 @@ When creating a client, the developer:
 1. Writes a *service query*
 2. Requests iecf to find and connect to a service whose attributes match that query
 
-It is important to know that service specifications and queries are very similar: in code, service specification
-is a child of service query. Thus, any function that takes a service query can be passed a service specification.
-The fundamental difference between the two is that a service query is used by clients whereas a service specification
- is used by services: a specification is used to *initialize* a service while a query is used to *find* a service.
+It is important to know that service specifications and queries are very similar: in code,
+the service specification object is a child of service query. However, there are two fundamental differences between
+service queries and specifications:
+ * a query is only used by clients whereas a service specification is used by both clients and services: a
+ specification is used to *initialize* or *connect* to a service while a query is used to *find* a service.
+ * a query cannot contain both an IP address and port, whereas a service specification can: the idea is that a query
+ is used to *find* the address and port of a service. If the query already contains these values,
+ then all the information needed to connect to a service is already specified and need not be found.
 
-At this point, we will digress a little and explain what it means to find a service on the network. The act of
+At this point, we will digress a little and elaborate on what it means to find a service on the network. The act of
 finding a service involves querying for it (by name, the protocol it uses, etc.) and getting the corresponding ip
 address and port number in return. Now, a service can only be found if it is first advertised on the network. One can
  think of advertising a service as constantly broadcasting the corresponding service specification on the LAN (not
@@ -36,6 +40,7 @@ Here is a sample service specification:
 ```json
 {
   "name": "/my/home/thermostat/temperature_sensor",
+  "advertise": {"locally": true, "cloud": false},
   "type": {
     "name": "zmqpubsub",
     "protocol": "tcp"
@@ -43,15 +48,17 @@ Here is a sample service specification:
   "type_params": {"ssl": false},
   "address" : "127.0.0.1",
   "port": 8999,
-  "properties": {"dataType": "float", "unit": "F", "sensorType": "ambient"},
-  "advertise": {"locally": true, "cloud": false}
+  "properties": {"dataType": "float", "unit": "F", "sensorType": "ambient"}
 }
 ```
 
 Let's go through each of the above attributes:
 
-* `name` *(compulsory)*: a string, preferably a user-friendly one, since service names might be displayed by other
-applications
+* `name` *(optional with exceptions)*: a string, preferably a user-friendly one,
+since service names might be displayed by other applications. Note: a `name` is *compulsory* if the service is
+advertised on the network.
+* advertise *(optional)*: when not present, service is advertised locally (on the LAN) by default. Currently,
+iecf does not support advertising services in the cloud, so the 'cloud' field is essentially ignored.
 * `type` *(compulsory)*: the details of how messages are sent and received are indicated by the `type` field. The
 `type` field usually contains the `name` of a *communication plugin*. In iecf, plugins abstract away the details of
 *how* messages are sent, thus allowing developers to focus more on the contents of those messages.
@@ -65,8 +72,6 @@ passes this field "as-is" to the communication plugin.
  Here, the properties indicate that the sensor is publishing the ambient temperature in Fahrenheit using a
  floating-point format. More on these properties when we talk about the thermostat.
 * address *(optional)*: the address the service will run at. When not specified, `localhost` is used.
-* advertise *(optional)*: when not present, service is advertised locally (on the LAN) by default. Currently,
-iecf does not support advertising services in the cloud, so the 'cloud' field is essentially ignored.
 
 This specification can then be passed to {@link module:main.createService}, which will eventually return an instance
 of a service running at the given address and port.

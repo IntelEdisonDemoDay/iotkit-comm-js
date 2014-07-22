@@ -3,7 +3,7 @@ At the moment, iecf supports only *communication plugins*. The following communi
 * {@link module:plugins/mqtt}
 * {@link module:plugins/zmqpubsub}
 * {@link module:plugins/zmqreqrep}
-* {@link module:plugins/iotkit} (for communicating with Intel's enableiot cloud)
+* {@link module:plugins/enableiotCloud} (for publishing data to Intel's `enableiot` cloud)
 
 #### Learn more
 

@@ -37,7 +37,7 @@ describe('[mdns]', function () {
     var path = require('path');
     var iecf = require('iecf');
 
-    var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/serviceSpecs/9889-dummy-service-spec.json"));
+    var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/9889-dummy-service-spec.json"));
     iecf.createService(spec, function (service) {
       "use strict";
 
@@ -104,7 +104,7 @@ describe('[mdns]', function () {
     it("should be able to find a service for the given query", function(done) {
       var iecf = require('iecf');
       var serviceDirectory = new iecf.ServiceDirectory();
-      var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceQueries/dummy-service-query.json"));
+      var query = new iecf.ServiceQuery(path.join(__dirname, "resources/queries/dummy-service-query.json"));
       serviceDirectory.discoverServices(query, function (serviceSpec) {
         expect(serviceSpec.properties.dataType).to.equal("float");
         done();
@@ -125,7 +125,7 @@ describe('[mdns]', function () {
       var iecf = require('iecf');
 
       var serviceDirectory = new iecf.ServiceDirectory();
-      var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceQueries/dummy-service-query.json"));
+      var query = new iecf.ServiceQuery(path.join(__dirname, "resources/queries/dummy-service-query.json"));
       serviceDirectory.discoverServices(query, function (serviceSpec) {
         "use strict";
 

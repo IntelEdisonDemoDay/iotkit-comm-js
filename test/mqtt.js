@@ -43,7 +43,7 @@ describe('[mqtt]', function () {
     var path = require('path');
     var iecf = require('iecf');
 
-    var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/serviceSpecs/1889-mqtt-mini-broker-spec.json"));
+    var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/1889-mqtt-mini-broker-spec.json"));
     iecf.createService(spec, function (service) {
       var clients = {};
 
@@ -106,8 +106,8 @@ describe('[mqtt]', function () {
       function(done) {
         var iecf = require('iecf');
 
-        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceSpecs/1883-mqtt-broker-spec.json"));
-        iecf.createClient(query, function (client) {
+        var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/1883-mqtt-broker-spec.json"));
+        iecf.createClient(spec, function (client) {
           setInterval(function () {
             "use strict";
             client.comm.send("my other message", {topic: "mytopic"});
@@ -129,8 +129,8 @@ describe('[mqtt]', function () {
       function(done) {
         var iecf = require('iecf');
 
-        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceSpecs/1883-mqtt-broker-spec.json"));
-        iecf.createClient(query, function (client) {
+        var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/1883-mqtt-broker-spec.json"));
+        iecf.createClient(spec, function (client) {
           client.comm.subscribe("mytopic");
           client.comm.setReceivedMessageHandler(function(message, context) {
             "use strict";
@@ -159,7 +159,7 @@ describe('[mqtt]', function () {
         var iecf = require('iecf');
 
         var serviceDirectory = new iecf.ServiceDirectory();
-        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceQueries/mqtt-mini-broker-query.json"));
+        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/queries/mqtt-mini-broker-query.json"));
 
         // explicitly discover service first. This can be skipped; see other tests that show
         // how to discover and connect automatically.
@@ -204,7 +204,7 @@ describe('[mqtt]', function () {
       function(done) {
         var iecf = require('iecf');
 
-        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceQueries/mqtt-mini-broker-query.json"));
+        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/queries/mqtt-mini-broker-query.json"));
         iecf.createClient(query, function (client) {
             setInterval(function () {
               client.comm.send("my other other message", {topic: "mytopic"});
@@ -227,7 +227,7 @@ describe('[mqtt]', function () {
     it("should discover and subscribe to data from mini broker",
       function (done) {
         var iecf = require('iecf');
-        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceQueries/mqtt-mini-broker-query.json"));
+        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/queries/mqtt-mini-broker-query.json"));
         iecf.createClient(query, function (client) {
             client.comm.subscribe("mytopic");
             client.comm.setReceivedMessageHandler(function(message, context) {
@@ -258,7 +258,7 @@ describe('[mqtt]', function () {
       function(done) {
         var iecf = require('iecf');
         var serviceDirectory = new iecf.ServiceDirectory();
-        var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/serviceSpecs/1883-temp-service-via-broker.json"));
+        var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/1883-temp-service-via-broker.json"));
         serviceDirectory.advertiseService(spec);
         iecf.createClient(spec, function (client) {
           setInterval(function () {
@@ -279,7 +279,7 @@ describe('[mqtt]', function () {
       function (done) {
         var iecf = require('iecf');
 
-        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceQueries/temp-service-query-mqtt.json"));
+        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/queries/temp-service-query-mqtt.json"));
         iecf.createClient(query, function (client) {
           client.comm.subscribe(client.spec.name);
           client.comm.setReceivedMessageHandler(function (message, context) {
