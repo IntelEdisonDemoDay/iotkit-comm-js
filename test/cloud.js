@@ -21,6 +21,8 @@
 var expect = require('chai').expect;
 var path = require('path');
 
+// todo: make sure subscribe passes before release 1
+
 describe('[cloud]', function () {
 
   describe('[publish]', function () {

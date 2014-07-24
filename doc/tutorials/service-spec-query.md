@@ -40,38 +40,31 @@ Here is a sample service specification:
     "name": "zmqpubsub",
     "protocol": "tcp"
   },
+  "type_params": {"ssl": false},
   "address" : "127.0.0.1",
   "port": 8999,
   "properties": {"dataType": "float", "unit": "F", "sensorType": "ambient"},
-  "comm_params": {"ssl": false},
   "advertise": {"locally": true, "cloud": false}
 }
 ```
 
 Let's go through each of the above attributes:
 
-* name *(compulsory)*: a string, preferably a user-friendly one, since service names might be displayed by other
+* `name` *(compulsory)*: a string, preferably a user-friendly one, since service names might be displayed by other
 applications
-* type *(compulsory)*
-  * name *(compulsory)*: name of the protocol this service will be speaking. Here, 'zmqpubsub' implies that the service
-   will be using [zeromq][1] pub/sub sockets to communicate. More specifically, a zeromq publisher is a service that
-   writes to sockets of type `pub`. A zeromq subscriber is a client that can then "subscribe" to data written to that
-    socket. The iecf library supports other protocols like `mqtt` and `zmqreqrep` that are implemented as
-    "plugins". You are not required to use supported communication protocols, but it is quite convenient to do so.
-    More on this in the {@tutorial plugin} tutorial.
+* `type` *(compulsory)*: the details of how messages are sent and received are indicated by the `type` field. The
+`type` field usually contains the `name` of a *communication plugin*. In iecf, plugins abstract away the details of
+*how* messages are sent, thus allowing developers to focus more on the contents of those messages.
+  * `name` *(compulsory)*: name of the protocol this service will be speaking; this is also the name of the
+  corresponding communication plugin.
   * protocol *(compulsory)*: this is the transport protocol; only 'tcp' or 'udp' is supported
+* type_params *(optional)*:  A communication plugin may support configuration parameters that can be set here. iecf
+passes this field "as-is" to the communication plugin.
 * port *(compulsory)*: port number the service will run on
 * properties *(optional)*: any user defined properties the service has. Each property must be a `"name": value` pair.
  Here, the properties indicate that the sensor is publishing the ambient temperature in Fahrenheit using a
  floating-point format. More on these properties when we talk about the thermostat.
 * address *(optional)*: the address the service will run at. When not specified, `localhost` is used.
-* comm_params *(optional)*: as mentioned above, the details of how messages are sent and received are handled by
-communication plugins. These plugins abstract out communication details and allow the developer to focus on message
-contents instead of *how* messages are exchanged. The plugins may support configuration parameters that a developer
-can set; these parameters are passed in using the `comm_params` field. A communication plugin will document
-the parameters it accepts. For example, in the specification above, the field `comm_params` contains the `ssl`
-parameter which states that a non-secure server should be started (note: at the moment the `zmqpubsub` plugin ignores
- the `ssl` parameter. The above specification is only an example).
 * advertise *(optional)*: when not present, service is advertised locally (on the LAN) by default. Currently,
 iecf does not support advertising services in the cloud, so the 'cloud' field is essentially ignored.
 
@@ -112,17 +105,21 @@ connected to the corresponding service. Now, here is a more detailed service que
     "name": "zmqpubsub",
     "protocol": "tcp"
   },
+  "type_params": {"ssl": false}
   "address" : "127.0.0.1",
   "port": 8999,
-  "properties": {"dataType": "float", "unit": "F", "sensorType": "ambient"},
-  "comm_params": {"ssl": false}
+  "properties": {"dataType": "float", "unit": "F", "sensorType": "ambient"}
 }
 ```
 
 Notice that it looks exactly like the specification in the previous section. An address and port number in a query
 implies that the client already knows where the service is, thus, iecf will not search for the service. Instead,
-a client instance connected to a service at the given address and port will be returned. Also,
-notice the `comm_params` field which tells the `zmqpubsub` plugin to make an insecure connection to the found service.
+a client instance connected to a service at the given address and port will be returned. Note also, that the
+`type_params` field here can be used in the same way as the one in the service specification.
+
+#### Learn more
+
+* An [overview of communication plugins]{@tutorial plugin}
 
 [1]: http://en.wikipedia.org/wiki/Multicast_DNS
 [2]: http://zguide.zeromq.org/page:all#Getting-the-Message-Out

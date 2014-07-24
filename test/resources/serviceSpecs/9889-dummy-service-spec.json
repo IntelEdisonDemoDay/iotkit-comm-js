@@ -6,5 +6,5 @@
   },
   "port" : 9889,
   "properties" : {"dataType": "float"},
-  "comm_params": {"ssl": false}
+  "type_params": {"ssl": false}
 }

@@ -11,8 +11,6 @@
  * more details.
  */
 
-/**  */
-
 /**
  * Tests if a service specification is correctly validated
  * @module test/query

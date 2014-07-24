@@ -1,8 +1,11 @@
-At the moment, iecf supports only *communication plugins*. Thus the following topics will be specific to these
+At the moment, iecf supports *communication plugins* only. Thus the following topics are specific to these
  plugins:
 
 1. About communication plugins
 1. How communication plugins are instantiated
+1. Communicating without plugins
+1. Writing your own plugin
+1. Sharing your plugins
 1. Learn more
 
 #### About communication plugins
@@ -23,9 +26,9 @@ message to the server using the `zmqreqrep` plugin:
 client.comm.send("hello");
 ```
 
-Each plugin will document the functions it provides. For a list of plugins and their API see the [supported
-plugins]{@tutorial supported-plugins} page. At this point, it might be worth spending some time understanding how
-plugins get instantiated in the `.comm` field; that is the topic of the next section.
+Each plugin will document the functions it provides. For a list of plugins and their API see the
+[supported plugins]{@tutorial supported-plugins} page. At this point, it might be worth spending some time
+understanding how plugins get instantiated in the `.comm` field; that is the topic of the next section.
 
 #### How communication plugins are instantiated
 
@@ -52,10 +55,31 @@ iecf will pass the corresponding service specification to the client side constr
 plugin. The constructor will then `connect` to the service. If all goes well, iecf will set the `client.comm`
 field to this newly created plugin object.
 
+#### Communicating without plugins
+
+iecf supports various communication protocols implemented using "plugins" (see [supported plugins]{@tutorial
+supported-plugins}). However, services and clients are not required to use plugins. They can simply use iecf's
+service discovery and advertisement features and implement the communication themselves. To learn more go
+[here]{@tutorial service-directory}.
+
+Alternatively, you can choose to abstract away communication details inside a plugin you write yourself. The iecf
+library will then load your communication plugin just like it loads any other.
+
+#### Writing your own plugin
+
+There are two advantages of writing an iecf communication plugin:
+1. Share-able code: an iecf plugin can be shared with others. The community can then use your communication plugin
+just like any other iecf plugin.
+1. More readable code: by abstracting communication details into a plugin, the service and client code focuses more on
+the messages that are sent as opposed to *how* they are sent.
+
+#### Sharing your plugins
+
+*(coming soon)*
+
 #### Learn more
 
-1. Write a communication plugin *(coming soon)*
-1. Browse the list of [supported plugins]{@tutorial supported-plugins} and their respective APIs
+* Learn how to use the iecf [service directory]{@tutorial service-directory}
 
 [1]: http://mqtt.org/
 [2]: http://zguide.zeromq.org/

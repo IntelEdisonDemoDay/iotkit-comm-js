@@ -39,8 +39,8 @@ but its also easy to write your own if necessary.
 
 #### Run the client
 
-Assuming the service query (`server-spec.json`: in this case also the service specification) and the source
-code (`client.js`) are in the same directory, you can run the client using:
+Assuming the service query `server-spec.json` (in this case also the service specification) and the source
+code `client.js` are in the same directory, you can run the client using:
 
 ```sh
 node client.js

@@ -287,6 +287,9 @@ $ node dashboard.js
 
 * The thermostat can alternatively publish the running mean to the cloud; the dashboard can then get it from there.
 To learn how to communicate with the cloud go [here]{@tutorial cloud}.
+* The thermostat need not use communication plugins like `zmqpubsub`. It can use the iecf service directory to find
+and advertise services, while implementing its own communication protocol. To learn how,
+go [here]{@tutorial service-directory}.
 
 [1]: http://zeromq.org/
 [2]: http://en.wikipedia.org/wiki/Multicast_DNS
