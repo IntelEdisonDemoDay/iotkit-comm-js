@@ -26,8 +26,7 @@ var iecf = require('iecf');
 // create a query for temperature sensors on the network
 // the query in 'temperature-sensor-query.json' looks for only those sensors
 // that are publishing ambient floating-point temperatures.
-var sensorQuery = new iecf.ServiceQuery();
-sensorQuery.initServiceQueryFromFile('temperature-sensor-query.json');
+var sensorQuery = new iecf.ServiceQuery('temperature-sensor-query.json');
 
 // no. of sensors this thermostat is subscribing to
 var sensorCount = 0;
@@ -45,7 +44,7 @@ var mypublisher = null;
 // whenever a temperature sensor is found, the callback is called with a new
 // 'client' instance. This instance can be used to communicate
 // with the corresponding sensor.
-iecf.createClient(sensorQuery, serviceFilter, function (client) {
+iecf.createClient(sensorQuery, function (client) {
 
   console.log("Found new temperature sensor - " + client.spec.address + ':' + client.spec.port);
 
@@ -68,7 +67,7 @@ iecf.createClient(sensorQuery, serviceFilter, function (client) {
 
     // compute the mean of the temperatures as they arrive
     sampleCount++;
-    cumulativeMovingAverage = (temperature + sampleCount * cumulativeMovingAverage)/(sampleCount + 1);
+    cumulativeMovingAverage = (temperature + sampleCount * cumulativeMovingAverage) / (sampleCount + 1);
 
     console.log("New average ambient temperature (cumulative): " + cumulativeMovingAverage);
 
@@ -76,12 +75,17 @@ iecf.createClient(sensorQuery, serviceFilter, function (client) {
     // can subscribe to it. See distributed-thermostat/dashboard.js
     if (mypublisher) mypublisher.comm.publish("mean_temp: " + cumulativeMovingAverage);
   }
-});
+}, serviceFilter);
 
 // If this function returns false a client instance for the respective temperature
 // sensor is not returned. In other words, the callback in the third argument
 // of 'createClient' above is not called when this function returns 'false'.
 function serviceFilter(serviceSpec) {
+
+  // only want ambient temperature sensors
+  if (serviceSpec.properties.sensorType !== 'ambient')
+    return false;
+
   // will accept only 10 temperature sensors
   if (sensorCount == 10) {
     return false;
@@ -91,8 +95,7 @@ function serviceFilter(serviceSpec) {
 }
 
 // create the service that will publish the latest mean temperature
-var spec = new iecf.ServiceSpecValidator();
-spec.readServiceSpecFromFile('thermostat-spec.json');
-iecf.createService(spec.getValidatedSpec(), function (service) {
+var spec = new iecf.ServiceSpec('thermostat-spec.json');
+iecf.createService(spec, function (service) {
   mypublisher = service;
 });

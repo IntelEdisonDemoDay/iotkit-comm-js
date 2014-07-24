@@ -16,18 +16,12 @@ Now here's the source code for the client itself (place in `client.js`):
 ```js
 var iecf = require('iecf');
 var path = require('path');
-
-var query = new iecf.ServiceQuery();
-query.initServiceQueryFromFile(path.join(__dirname, "server-spec.json"));
-
-iecf.createClient(query, null, function (client) {
-
-  client.comm.setReceivedMessageHandler(function(message, context) {
-    "use strict";
+var query = new iecf.ServiceQuery(path.join(__dirname, "server-spec.json"));
+iecf.createClient(query, function (client) {
+  client.comm.setReceivedMessageHandler(function (message, context) {
     console.log("received from server: " + message.toString());
     client.comm.send("hello");
   });
-
   client.comm.send("hello");
 });
 ```

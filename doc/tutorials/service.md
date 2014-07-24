@@ -29,17 +29,12 @@ Now here's the source code for the service itself (place in `server.js`):
 ```js
 var iecf = require('iecf');
 var path = require('path');
-
-var validator = new iecf.ServiceSpecValidator();
-validator.readServiceSpecFromFile(path.join(__dirname, "server-spec.json"));
-
-iecf.createService(validator.getValidatedSpec(), function (service) {
-
+var spec = new iecf.ServiceSpec(path.join(__dirname, "server-spec.json"));
+iecf.createService(spec, function (service) {
   service.comm.setReceivedMessageHandler(function(client, msg, context) {
     console.log("received from client: " + msg.toString());
     service.comm.sendTo(client, "hi");
   });
-
 });
 ```
 

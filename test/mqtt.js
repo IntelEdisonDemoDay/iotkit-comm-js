@@ -43,12 +43,8 @@ describe('[mqtt]', function () {
     var path = require('path');
     var iecf = require('iecf');
 
-    var validator = new iecf.ServiceSpecValidator();
-    validator.readServiceSpecFromFile(path.join(__dirname, "resources/serviceSpecs/1889-mqtt-mini-broker-spec.json"));
-
-    iecf.createService(validator.getValidatedSpec(), function (service) {
-      "use strict";
-
+    var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/serviceSpecs/1889-mqtt-mini-broker-spec.json"));
+    iecf.createService(spec, function (service) {
       var clients = {};
 
       service.comm.setReceivedMessageHandler(function(client, msg, context) {
@@ -110,10 +106,8 @@ describe('[mqtt]', function () {
       function(done) {
         var iecf = require('iecf');
 
-        var validator = new iecf.ServiceSpecValidator();
-        validator.readServiceSpecFromFile(path.join(__dirname, "resources/serviceSpecs/1883-mqtt-broker-spec.json"));
-
-        iecf.createClientForGivenService(validator.getValidatedSpec(), function (client) {
+        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceSpecs/1883-mqtt-broker-spec.json"));
+        iecf.createClient(query, function (client) {
           setInterval(function () {
             "use strict";
             client.comm.send("my other message", {topic: "mytopic"});
@@ -135,13 +129,9 @@ describe('[mqtt]', function () {
       function(done) {
         var iecf = require('iecf');
 
-        var validator = new iecf.ServiceSpecValidator();
-        validator.readServiceSpecFromFile(path.join(__dirname, "resources/serviceSpecs/1883-mqtt-broker-spec.json"));
-
-        iecf.createClientForGivenService(validator.getValidatedSpec(), function (client) {
-
+        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceSpecs/1883-mqtt-broker-spec.json"));
+        iecf.createClient(query, function (client) {
           client.comm.subscribe("mytopic");
-
           client.comm.setReceivedMessageHandler(function(message, context) {
             "use strict";
             expect(context.event).to.equal("message");
@@ -158,7 +148,7 @@ describe('[mqtt]', function () {
     /**
      * Shows how to find and connect to an MQTT service or broker running on the LAN. Uses single client. First,
      * call discoverServices with the appropriate service query ({@tutorial service-spec-query}) and then
-     * call createClientForGivenService with the found service specification ({@tutorial service-spec-query}).
+     * call createClient with the found service specification ({@tutorial service-spec-query}).
      * The preconditions are that a network connections exists, that an MQTT service (or broker) is running
      * on the LAN, and that the service is advertising appropriate service information. To run a sample of such
      * a service see {@link example/mqtt-mini-broadcast-broker.js}
@@ -168,17 +158,14 @@ describe('[mqtt]', function () {
       function(done) {
         var iecf = require('iecf');
 
-        var query = new iecf.ServiceQuery();
-        query.initServiceQueryFromFile(path.join(__dirname, "resources/serviceQueries/mqtt-mini-broker-query.json"));
+        var serviceDirectory = new iecf.ServiceDirectory();
+        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceQueries/mqtt-mini-broker-query.json"));
 
         // explicitly discover service first. This can be skipped; see other tests that show
         // how to discover and connect automatically.
-        var serviceDirectory = new iecf.ServiceDirectory();
-        serviceDirectory.discoverServices(query, null, function (serviceSpec) {
-          "use strict";
-
+        serviceDirectory.discoverServices(query, function (serviceSpec) {
           // once service has been discovered, connect to it
-          iecf.createClientForGivenService(serviceSpec, function (client) {
+          iecf.createClient(serviceSpec, function (client) {
 
             // client subscribes to a topic
             client.comm.subscribe("mytopic");
@@ -207,14 +194,6 @@ describe('[mqtt]', function () {
 
   describe('#discover', function() {
 
-    // The mdns browser returns all new services it finds. This means, that once it
-    // finds a service record, it won't find it again unless that service went down and came back up.
-    // Since the service we want to discover is not restarted between tests, just restart the
-    // service browser for each test.
-    beforeEach(function() {
-      var iecf = require('iecf');
-    });
-
     /**
      * Discovers and publishes data to the mini broadcast broker.
      * Prerequisite is that the mini broker is running on the LAN.
@@ -225,22 +204,18 @@ describe('[mqtt]', function () {
       function(done) {
         var iecf = require('iecf');
 
-        var query = new iecf.ServiceQuery();
-        query.initServiceQueryFromFile(path.join(__dirname, "resources/serviceQueries/mqtt-mini-broker-query.json"));
+        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceQueries/mqtt-mini-broker-query.json"));
+        iecf.createClient(query, function (client) {
+            setInterval(function () {
+              client.comm.send("my other other message", {topic: "mytopic"});
+            }, 200);
 
-        iecf.createClient(query, serviceFilter, function (client) {
-          setInterval(function () {
+            done();
+          },
+          function (serviceSpec) {
             "use strict";
-            client.comm.send("my other other message", {topic: "mytopic"});
-          }, 200);
-
-          done();
-        });
-
-        function serviceFilter (serviceRecord) {
-          "use strict";
-          return true;
-        }
+            return true;
+          });
       });
 
     /**
@@ -252,31 +227,23 @@ describe('[mqtt]', function () {
     it("should discover and subscribe to data from mini broker",
       function (done) {
         var iecf = require('iecf');
+        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceQueries/mqtt-mini-broker-query.json"));
+        iecf.createClient(query, function (client) {
+            client.comm.subscribe("mytopic");
+            client.comm.setReceivedMessageHandler(function(message, context) {
+              "use strict";
+              expect(context.event).to.equal("message");
+              expect(context.topic).to.equal("mytopic");
+              expect(message).to.equal("my other other message");
 
-        var query = new iecf.ServiceQuery();
-        query.initServiceQueryFromFile(path.join(__dirname, "resources/serviceQueries/mqtt-mini-broker-query.json"));
-
-        iecf.createClient(query, serviceFilter, function (client) {
-
-          client.comm.subscribe("mytopic");
-
-          client.comm.setReceivedMessageHandler(function(message, context) {
-            "use strict";
-            expect(context.event).to.equal("message");
-            expect(context.topic).to.equal("mytopic");
-            expect(message).to.equal("my other other message");
-
-            // close client connection
-            client.comm.done();
-            done();
+              // close client connection
+              client.comm.done();
+              done();
+            });
+          },
+          function (serviceSpec) {
+            return true;
           });
-
-        });
-
-        function serviceFilter (serviceRecord) {
-          "use strict";
-          return true;
-        }
       });
   });
 
@@ -290,19 +257,12 @@ describe('[mqtt]', function () {
     it("should allow a client to act like a service by advertising the broker (proxies for client)",
       function(done) {
         var iecf = require('iecf');
-
-        var validator = new iecf.ServiceSpecValidator();
-        validator.readServiceSpecFromFile(
-          path.join(__dirname, "resources/serviceSpecs/1883-temp-service-via-broker.json"));
-        var validatedSpec = validator.getValidatedSpec();
-
         var serviceDirectory = new iecf.ServiceDirectory();
-        serviceDirectory.advertiseService(validatedSpec);
-
-        iecf.createClientForGivenService(validatedSpec, function (client) {
+        var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/serviceSpecs/1883-temp-service-via-broker.json"));
+        serviceDirectory.advertiseService(spec);
+        iecf.createClient(spec, function (client) {
           setInterval(function () {
-            "use strict";
-            client.comm.send("30 deg F", {topic: validatedSpec.name});
+            client.comm.send("30 deg F", {topic: spec.name});
           }, 200);
           done();
         });
@@ -319,13 +279,10 @@ describe('[mqtt]', function () {
       function (done) {
         var iecf = require('iecf');
 
-        var query = new iecf.ServiceQuery();
-        query.initServiceQueryFromFile(
-          path.join(__dirname, "resources/serviceQueries/temp-service-query-mqtt.json"));
-
-        iecf.createClient(query, serviceFilter, function (client) {
+        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceQueries/temp-service-query-mqtt.json"));
+        iecf.createClient(query, function (client) {
           client.comm.subscribe(client.spec.name);
-          client.comm.setReceivedMessageHandler(function(message, context) {
+          client.comm.setReceivedMessageHandler(function (message, context) {
             "use strict";
             expect(context.event).to.equal("message");
             expect(context.topic).to.equal(client.spec.name);
@@ -334,13 +291,10 @@ describe('[mqtt]', function () {
             // close client connection
             client.comm.done();
             done();
+          }, function (serviceSpec) {
+            return true;
           });
         });
-
-        function serviceFilter (serviceRecord) {
-          "use strict";
-          return true;
-        }
       });
   });
 });

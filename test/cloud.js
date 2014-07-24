@@ -30,12 +30,11 @@ describe('[cloud]', function () {
     it("should successfully publish data to the cloud", function(done) {
       var iecf = require('iecf');
 
-      var validator = new iecf.ServiceSpecValidator();
-      validator.readServiceSpecFromFile(path.join(__dirname, "resources/serviceSpecs/1884-temp-service-iotkit.json"));
+      var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/serviceSpecs/1884-temp-service-iotkit.json"));
 
       var i = 0;
       var msg = "";
-      iecf.createClientForGivenService(validator.getValidatedSpec(), function (client) {
+      iecf.createClient(spec, function (client) {
         "use strict";
 
         // Register a Sensor by specifying its name and its type
@@ -60,12 +59,10 @@ describe('[cloud]', function () {
     it("should successfully subscribe to data from the cloud", function(done) {
       var iecf = require('iecf');
 
-      var validator = new iecf.ServiceSpecValidator();
-      validator.readServiceSpecFromFile(path.join(__dirname, "resources/serviceSpecs/1884-temp-service-iotkit.json"));
-
+      var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/serviceSpecs/1884-temp-service-iotkit.json"));
       var i = 0;
       var msg = "";
-      iecf.createClientForGivenService(validator.getValidatedSpec(), function (client) {
+      iecf.createClient(spec, function (client) {
         "use strict";
 
         client.comm.subscribe();

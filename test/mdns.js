@@ -22,6 +22,7 @@
  */
 
 var path = require('path');
+var expect = require('chai').expect;
 
 describe('[mdns]', function () {
 
@@ -36,10 +37,8 @@ describe('[mdns]', function () {
     var path = require('path');
     var iecf = require('iecf');
 
-    var validator = new iecf.ServiceSpecValidator();
-    validator.readServiceSpecFromFile(path.join(__dirname, "resources/serviceSpecs/9889-dummy-service-spec.json"));
-
-    iecf.createService(validator.getValidatedSpec(), function (service) {
+    var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/serviceSpecs/9889-dummy-service-spec.json"));
+    iecf.createService(spec, function (service) {
       "use strict";
 
       var clients = {};
@@ -104,12 +103,10 @@ describe('[mdns]', function () {
      */
     it("should be able to find a service for the given query", function(done) {
       var iecf = require('iecf');
-
-      var query = new iecf.ServiceQuery();
-      query.initServiceQueryFromFile(path.join(__dirname, "resources/serviceQueries/dummy-service-query.json"));
-
       var serviceDirectory = new iecf.ServiceDirectory();
-      serviceDirectory.discoverServices(query, null, function (serviceSpec) {
+      var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceQueries/dummy-service-query.json"));
+      serviceDirectory.discoverServices(query, function (serviceSpec) {
+        expect(serviceSpec.properties.dataType).to.equal("float");
         done();
       });
     });
@@ -127,13 +124,14 @@ describe('[mdns]', function () {
     it("should be able to find a service for the given query and connect to it", function(done) {
       var iecf = require('iecf');
 
-      var query = new iecf.ServiceQuery();
-      query.initServiceQueryFromFile(path.join(__dirname, "resources/serviceQueries/dummy-service-query.json"));
-
       var serviceDirectory = new iecf.ServiceDirectory();
-      serviceDirectory.discoverServices(query, null, function (serviceSpec) {
+      var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceQueries/dummy-service-query.json"));
+      serviceDirectory.discoverServices(query, function (serviceSpec) {
         "use strict";
-        iecf.createClientForGivenService(serviceSpec, function (client) {
+
+        expect(serviceSpec.properties.dataType).to.equal("float");
+
+        iecf.createClient(serviceSpec, function (client) {
 
           client.comm.subscribe("mytopic");
 

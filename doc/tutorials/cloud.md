@@ -76,11 +76,8 @@ Write the code to publish data:
 
 ```js
 var iecf = require('iecf');
-
-var validator = new iecf.ServiceSpecValidator();
-validator.readServiceSpecFromFile(path.join(__dirname, "enableiot-cloud-query.json"));
-
-iecf.createClientForGivenService(validator.getValidatedSpec(), function (client) {
+var spec = new iecf.ServiceSpec(path.join(__dirname, "enableiot-cloud-query.json"));
+iecf.createClient(spec, function (client) {
   client.comm.registerSensor("garage","temperature.v1.0");
 
   var msg = {"n": "garage","v": i};
@@ -121,11 +118,8 @@ Write the code to subscribe to the data:
 
 ```js
 var iecf = require('iecf');
-
-var validator = new iecf.ServiceSpecValidator();
-validator.readServiceSpecFromFile(path.join(__dirname, "enableiot-cloud-query.json"));
-
-iecf.createClientForGivenService(validator.getValidatedSpec(), function (client) {
+var spec = new iecf.ServiceSpec(path.join(__dirname, "enableiot-cloud-query.json"));
+iecf.createClient(spec, function (client) {
   client.comm.subscribe();
 
   client.comm.setReceivedMessageHandler(function(message, context) {

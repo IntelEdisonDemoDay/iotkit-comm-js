@@ -29,11 +29,7 @@ describe('[spec]', function () {
      */
     it("should validate a correct spec without throwing an error", function() {
       var iecf = require('iecf');
-
-      var validator = new iecf.ServiceSpecValidator();
-      validator.readServiceSpecFromFile(path.join(__dirname, "resources/serviceSpecs/1889-mqtt-mini-broker-spec.json"));
-      var spec = validator.getValidatedSpec();
-
+      var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/serviceSpecs/1889-mqtt-mini-broker-spec.json"));
       expect(spec.name).to.be.a('string');
     });
 });

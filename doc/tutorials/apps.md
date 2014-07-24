@@ -72,12 +72,10 @@ applications
   tutorial*
 
 A JSON service specification file is useful only if it can be passed around as an object; to do that,
-it must first be read and then validated:
+it must be read in and validated:
 
 ```
-var validator = new iecf.ServiceSpecValidator();
-validator.readServiceSpecFromFile('temperature-sensor-spec.json');
-var spec = validator.getValidatedSpec();
+var spec = new iecf.ServiceSpec('temperature-sensor-spec.json');
 ```
 
 The resulting object `spec` can now be passed as an argument to `createService` (the complete commented
@@ -117,17 +115,16 @@ To find the temperature sensors, the thermostat must query the network using a '
 Now, that we have the service query, it must be converted into a valid query object:
 
 ```js
-var sensorQuery = new iecf.ServiceQuery();
-sensorQuery.initServiceQueryFromFile('temperature-sensor-query.json');
+var sensorQuery = new iecf.ServiceQuery('temperature-sensor-query.json');
 ```
 
 The `sensorQuery` object can now be used to find and connect to temperature sensors on the network:
 
 ```
-iecf.createClient(sensorQuery, serviceFilter, function (client) {
+iecf.createClient(sensorQuery, function (client) {
   console.log("Found new temperature sensor - " + client.spec.address + ':' + client.spec.port);
   ...
-});
+}, serviceFilter);
 
 function serviceFilter(serviceSpec) {
   ...
@@ -149,33 +146,37 @@ is try to match the fields of a service query with the fields of each service sp
 Once a match is found, the application is notified using the `serviceFilter` callback.
 
 An application can also choose **not** to connect to a found service. It might need to do so when, say,
-it wants to limit the number of services it connects to. In our example, the thermostat will only connect to a maximum
-of `10` sensors:
+it wants to limit the number of services it connects to or does not want to connect to a certain type of service. In
+our example, the thermostat will only connect to a maximum of `10` *ambient* temperature sensors:
 
 ```
 var sensorCount = 0;
 function serviceFilter(serviceSpec) {
+  if (serviceSpec.properties.sensorType !== 'ambient')
+    return false;
+
   if (sensorCount == 10) {
     return false;
   }
   sensorCount++;
+
   return true;
 }
 ```
 
-Now that our thermostat can find and connect to temperature sensors, it needs to receive and parse the temperature
-readings:
+A useful tip: an alternative to checking 'sensorType' in the `serviceFilter` is to set the
+`properties.sensorType` field in the client's service query. Now, that our thermostat can find and connect to
+temperature sensors, it needs to receive and parse the temperature readings:
 
 ```js
-iecf.createClient(sensorQuery, serviceFilter, function (client) {
+iecf.createClient(sensorQuery, function (client) {
   console.log("Found new temperature sensor - " + client.spec.address + ':' + client.spec.port);
   client.comm.setReceivedMessageHandler(msgHandler);
   client.comm.subscribe("mytemp");
-});
-
-function msgHandler(binmsg) {
-  ...
-}
+  function msgHandler(binmsg) {
+    ...
+  }
+}, serviceFilter);
 ```
 
 Here, the thermostat is subscribing to information published under the topic "mytemp". If you look at the source code
@@ -204,9 +205,8 @@ applications can subscribe to it. To successfully publish though, the thermostat
 
 
 ```
-var spec = new iecf.ServiceSpecValidator();
-spec.readServiceSpecFromFile('thermostat-spec.json');
-iecf.createService(spec.getValidatedSpec(), function (service) {
+var spec = new iecf.ServiceSpec('thermostat-spec.json');
+iecf.createService(spec, function (service) {
   mypublisher = service;
 });
 ```
@@ -238,10 +238,8 @@ thermostat is available {@link example/distributed-thermostat/thermostat.js|here
 The dashboard is responsible for subscribing to the mean temperature published by the thermostat and display it:
 
 ```
-var thermostatQuery = new iecf.ServiceQuery();
-thermostatQuery.initServiceQueryFromFile('thermostat-query.json');
-
-iecf.createClient(thermostatQuery, null, function (client) {
+var thermostatQuery = new iecf.ServiceQuery('thermostat-query.json');
+iecf.createClient(thermostatQuery, function (client) {
   client.comm.setReceivedMessageHandler(msgHandler);
   client.comm.subscribe("mean_temp");
 });
@@ -289,8 +287,6 @@ $ node dashboard.js
 
 * The thermostat can alternatively publish the running mean to the cloud; the dashboard can then get it from there.
 To learn how to communicate with the cloud go [here]{@tutorial cloud}.
-* An application can directly connect to a service by providing its address and port in the service specification
-(see {@link module:main.createClientForGivenService})
 
 [1]: http://zeromq.org/
 [2]: http://en.wikipedia.org/wiki/Multicast_DNS

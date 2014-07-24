@@ -22,12 +22,11 @@
 var iecf = require('iecf');
 
 // create service query to find the thermostat
-var thermostatQuery = new iecf.ServiceQuery();
-thermostatQuery.initServiceQueryFromFile('thermostat-query.json');
+var thermostatQuery = new iecf.ServiceQuery('thermostat-query.json');
 
 // create a client that subscribes to the mean temperature
 // from the thermostat
-iecf.createClient(thermostatQuery, null, function (client) {
+iecf.createClient(thermostatQuery, function (client) {
   client.comm.setReceivedMessageHandler(msgHandler);
   client.comm.subscribe("mean_temp");
 });

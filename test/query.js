@@ -27,10 +27,7 @@ describe('[query]', function () {
    */
   it("should validate a correct query without throwing an error", function() {
     var iecf = require('iecf');
-
-    var query = new iecf.ServiceQuery();
-    query.initServiceQueryFromFile(path.join(__dirname, "resources/serviceQueries/mqtt-mini-broker-query.json"));
-
-    expect(query.rawQuery.name).to.be.a('string');
+    var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceQueries/mqtt-mini-broker-query.json"));
+    expect(query.name).to.be.a('string');
   });
 });

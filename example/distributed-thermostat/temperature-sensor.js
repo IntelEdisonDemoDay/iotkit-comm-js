@@ -22,11 +22,7 @@
 var iecf = require('iecf');
 
 // read the spec that describes the temperature sensing service
-var validator = new iecf.ServiceSpecValidator();
-validator.readServiceSpecFromFile('temperature-sensor-spec.json');
-
-// validate the spec
-var spec = validator.getValidatedSpec();
+var spec = new iecf.ServiceSpec('temperature-sensor-spec.json');
 
 // would normally use 'port' number in spec, however, in this case, makes
 // it easy to run many temperature sensors on the same local machine (low

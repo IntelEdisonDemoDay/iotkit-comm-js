@@ -25,7 +25,6 @@
  */
 
 var path = require('path');
-var spawn = require('child_process').spawn;
 var expect = require('chai').expect;
 
 describe('[zmq]', function () {
@@ -40,10 +39,8 @@ describe('[zmq]', function () {
     var iecf = require('iecf');
     var path = require('path');
 
-    var validator = new iecf.ServiceSpecValidator();
-    validator.readServiceSpecFromFile(path.join(__dirname, "resources/serviceSpecs/1885-temp-service-zmq-pubsub.json"));
-
-    iecf.createService(validator.getValidatedSpec(), function (service) {
+    var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/serviceSpecs/1885-temp-service-zmq-pubsub.json"));
+    iecf.createService(spec, function (service) {
       "use strict";
 
       setInterval(function () {
@@ -64,10 +61,8 @@ describe('[zmq]', function () {
     var iecf = require('iecf');
     var path = require('path');
 
-    var validator = new iecf.ServiceSpecValidator();
-    validator.readServiceSpecFromFile(path.join(__dirname, "resources/serviceSpecs/8333-temp-service-zmq-reqrep.json"));
-
-    iecf.createService(validator.getValidatedSpec(), function (service) {
+    var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/serviceSpecs/8333-temp-service-zmq-reqrep.json"));
+    iecf.createService(spec, function (service) {
       "use strict";
 
       service.comm.setReceivedMessageHandler(function(client, msg, context) {
@@ -100,30 +95,25 @@ describe('[zmq]', function () {
     it("should successfully subscribe to messages from ZMQ publisher",
       function(done) {
         var iecf = require('iecf');
-
-        var query = new iecf.ServiceQuery();
-        query.initServiceQueryFromFile(path.join(__dirname, "resources/serviceQueries/temp-service-query-zmq-pubsub.json"));
-
-        iecf.createClient(query, serviceFilter, function (client) {
-          "use strict";
-
-          client.comm.subscribe("mytopic");
-
-          client.comm.setReceivedMessageHandler(function(message, context) {
+        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceQueries/temp-service-query-zmq-pubsub.json"));
+        iecf.createClient(query, function (client) {
             "use strict";
-            expect(context.event).to.equal("message");
-            expect(message.toString()).to.equal("mytopic: my message");
 
-            // close client connection
-            client.comm.done();
-            done();
+            client.comm.subscribe("mytopic");
+
+            client.comm.setReceivedMessageHandler(function(message, context) {
+              "use strict";
+              expect(context.event).to.equal("message");
+              expect(message.toString()).to.equal("mytopic: my message");
+
+              // close client connection
+              client.comm.done();
+              done();
+            });
+          },
+          function (serviceSpec) {
+            return true;
           });
-        });
-
-        function serviceFilter (serviceRecord) {
-          "use strict";
-          return true;
-        }
       });
   }); // end #subscriber
 
@@ -137,28 +127,22 @@ describe('[zmq]', function () {
      */
     it("should successfully receive reply from a ZMQ replier", function(done) {
       var iecf = require('iecf');
-
-      var query = new iecf.ServiceQuery();
-      query.initServiceQueryFromFile(path.join(__dirname, "resources/serviceQueries/temp-service-query-zmq-reqrep.json"));
-
-      iecf.createClient(query, serviceFilter, function (client) {
-        "use strict";
-
-        client.comm.setReceivedMessageHandler(function(message, context) {
-          "use strict";
-          expect(context.event).to.equal("message");
-          expect(message.toString()).to.equal("hi");
-          client.comm.done();
-          done();
-        });
-
-        client.comm.send("hello");
-      });
-
-      function serviceFilter (serviceRecord) {
-        "use strict";
-        return true;
-      }
+      var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceQueries/temp-service-query-zmq-reqrep.json"));
+      iecf.createClient(query,
+        function (client) {
+          client.comm.setReceivedMessageHandler(function(message, context) {
+            "use strict";
+            expect(context.event).to.equal("message");
+            expect(message.toString()).to.equal("hi");
+            client.comm.done();
+            done();
+          });
+          client.comm.send("hello");
+        },
+        function (serviceSpec) {
+          return true;
+        }
+      );
     });
   }); // end #requester
 

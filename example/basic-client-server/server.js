@@ -19,16 +19,10 @@
 var iecf = require('iecf');
 var path = require('path');
 
-var validator = new iecf.ServiceSpecValidator();
-validator.readServiceSpecFromFile(path.join(__dirname, "server-spec.json"));
-
-iecf.createService(validator.getValidatedSpec(), function (service) {
-  "use strict";
-
+var spec = new iecf.ServiceSpec(path.join(__dirname, "server-spec.json"));
+iecf.createService(spec, function (service) {
   service.comm.setReceivedMessageHandler(function(client, msg, context) {
-    "use strict";
     console.log("received from client: " + msg.toString());
     service.comm.sendTo(client, "hi");
   });
-
 });

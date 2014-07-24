@@ -10,9 +10,10 @@ When creating a client, the developer:
 1. Writes a *service query*
 2. Requests iecf to find and connect to a service whose attributes match that query
 
-Thus, service specifications and queries are very similar. The fundamental difference is that a service query is used
- by clients whereas a service specification is used by services: a specification is used to initialize a service while
- a query is used to *find* a service.
+It is important to know that service specifications and queries are very similar: in code, service specification
+is a child of service query. Thus, any function that takes a service query can be passed a service specification.
+The fundamental difference between the two is that a service query is used by clients whereas a service specification
+ is used by services: a specification is used to *initialize* a service while a query is used to *find* a service.
 
 At this point, we will digress a little and explain what it means to find a service on the network. The act of
 finding a service involves querying for it (by name, the protocol it uses, etc.) and getting the corresponding ip
@@ -42,7 +43,8 @@ Here is a sample service specification:
   "address" : "127.0.0.1",
   "port": 8999,
   "properties": {"dataType": "float", "unit": "F", "sensorType": "ambient"},
-  "comm_params": {"ssl": false}
+  "comm_params": {"ssl": false},
+  "advertise": {"locally": true, "cloud": false}
 }
 ```
 
@@ -70,6 +72,8 @@ can set; these parameters are passed in using the `comm_params` field. A communi
 the parameters it accepts. For example, in the specification above, the field `comm_params` contains the `ssl`
 parameter which states that a non-secure server should be started (note: at the moment the `zmqpubsub` plugin ignores
  the `ssl` parameter. The above specification is only an example).
+* advertise *(optional)*: when not present, service is advertised locally (on the LAN) by default. Currently,
+iecf does not support advertising services in the cloud, so the 'cloud' field is essentially ignored.
 
 This specification can then be passed to {@link module:main.createService}, which will eventually return an instance
 of a service running at the given address and port.
@@ -116,8 +120,8 @@ connected to the corresponding service. Now, here is a more detailed service que
 ```
 
 Notice that it looks exactly like the specification in the previous section. An address and port number in a query
-implies that the client already knows where the service is. Thus the client need not search for the service,
-it can connect to it directly by using the function {@link module:main.createClientForGivenService}. Also,
+implies that the client already knows where the service is, thus, iecf will not search for the service. Instead,
+a client instance connected to a service at the given address and port will be returned. Also,
 notice the `comm_params` field which tells the `zmqpubsub` plugin to make an insecure connection to the found service.
 
 [1]: http://en.wikipedia.org/wiki/Multicast_DNS
