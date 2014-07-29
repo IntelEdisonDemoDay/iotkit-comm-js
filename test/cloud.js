@@ -30,13 +30,13 @@ describe('[cloud]', function () {
      * @function module:test/cloud~publish
      */
     it("should successfully publish data to the cloud", function(done) {
-      var iecf = require('iecf');
+      var iotkit = require('iotkit-comm');
 
-      var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/1884-temp-service-enableiot-cloud.json"));
+      var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/1884-temp-service-enableiot-cloud.json"));
 
       var i = 68;
       var msg = "";
-      iecf.createClient(spec, function (client) {
+      iotkit.createClient(spec, function (client) {
         "use strict";
 
         // Register a Sensor by specifying its name and its type
@@ -58,12 +58,12 @@ describe('[cloud]', function () {
      * @function module:test/cloud~subscribe
      */
     it("should successfully subscribe to data from the cloud", function(done) {
-      var iecf = require('iecf');
+      var iotkit = require('iotkit-comm');
 
-      var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/1884-temp-service-enableiot-cloud.json"));
+      var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/1884-temp-service-enableiot-cloud.json"));
       var i = 0;
       var msg = "";
-      iecf.createClient(spec, function (client) {
+      iotkit.createClient(spec, function (client) {
         "use strict";
 
         client.comm.subscribe();

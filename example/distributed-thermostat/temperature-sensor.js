@@ -12,17 +12,17 @@
  */
 
 /**
- * @file a dummy temperature sensor. Randomly chooses a reasonable
+ * @file A dummy temperature sensor. Randomly chooses a reasonable
  * integer to publish as temperature. The thermostat looks for these
  * sensors (on the same LAN) and subscribes to the temperatures they
  * publish. Those temperatures are then accumulated into a mean
  * temperature.
  * @see {@link example/distributed-thermostat/thermostat.js}
  */
-var iecf = require('iecf');
+var iotkit = require('iotkit-comm');
 
 // read the spec that describes the temperature sensing service
-var spec = new iecf.ServiceSpec('temperature-sensor-spec.json');
+var spec = new iotkit.ServiceSpec('temperature-sensor-spec.json');
 
 // would normally use 'port' number in spec, however, in this case, makes
 // it easy to run many temperature sensors on the same local machine (low
@@ -31,7 +31,7 @@ spec.port = getRandomInt(8000, 60000);
 
 // create the temperature sensing service described by the spec
 // read above.
-iecf.createService(spec, function (service) {
+iotkit.createService(spec, function (service) {
 
   // periodically publish sensed temperature. The thermostat
   // will eventually find this sensor and subscribe to the

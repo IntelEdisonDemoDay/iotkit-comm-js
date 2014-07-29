@@ -1,4 +1,4 @@
-At the moment, iecf supports *communication plugins* only. Thus the following topics are specific to these
+At the moment, iotkit-comm supports *communication plugins* only. Thus the following topics are specific to these
  plugins:
 
 1. About communication plugins
@@ -6,7 +6,6 @@ At the moment, iecf supports *communication plugins* only. Thus the following to
 1. Communicating without plugins
 1. Writing your own plugin
 1. Sharing your plugins
-1. Learn more
 
 #### About communication plugins
 
@@ -32,10 +31,10 @@ understanding how plugins get instantiated in the `.comm` field; that is the top
 
 #### How communication plugins are instantiated
 
-*This section assumes that you know how to write a client application using iecf. If not,
+*This section assumes that you know how to write a client application using iotkit-comm. If not,
 please go through the [client]{@tutorial client} tutorial first.*
 
-The `service.comm` or `client.comm` field is instantiated automatically. iecf knows which plugin to use from
+The `service.comm` or `client.comm` field is instantiated automatically. iotkit-comm knows which plugin to use from
 the `type.name` field of the service specification or query. Let's consider the example of a client that wants to
 connect to a service providing temperature readings; this is the service query it might issue:
 
@@ -51,35 +50,27 @@ connect to a service providing temperature readings; this is the service query i
 
 The above query says that this client is looking for a service which uses the `zmqpubsub` communication plugin.
 The likely implication is that the client uses the same plugin to communicate. Now when a matching service is found,
-iecf will pass the corresponding service specification to the client side constructor of the `zmqpubsub`
-plugin. The constructor will then `connect` to the service. If all goes well, iecf will set the `client.comm`
+iotkit-comm will pass the corresponding service specification to the client side constructor of the `zmqpubsub`
+plugin. The constructor will then `connect` to the service. If all goes well, iotkit-comm will set the `client.comm`
 field to this newly created plugin object.
 
 #### Communicating without plugins
 
-iecf supports various communication protocols implemented using "plugins" (see [supported plugins]{@tutorial
-supported-plugins}). However, services and clients are not required to use plugins. They can simply use iecf's
+iotkit-comm supports various communication protocols implemented using "plugins" (see [supported plugins]{@tutorial
+supported-plugins}). However, services and clients are not required to use plugins. They can simply use iotkit-comm's
 service discovery and advertisement features and implement the communication themselves. To learn more go
 [here]{@tutorial service-directory}.
 
-Alternatively, you can choose to abstract away communication details inside a plugin you write yourself. The iecf
-library will then load your communication plugin just like it loads any other.
+Alternatively, you can choose to abstract away communication details inside a plugin you write yourself. This plugin
+can then be used and shared like any other communication plugin.
 
 #### Writing your own plugin
 
-There are two advantages of writing an iecf communication plugin:
-1. Share-able code: an iecf plugin can be shared with others. The community can then use your communication plugin
-just like any other iecf plugin.
-1. More readable code: by abstracting communication details into a plugin, the service and client code focuses more on
-the messages that are sent as opposed to *how* they are sent.
+*(coming soon)*
 
 #### Sharing your plugins
 
 *(coming soon)*
-
-#### Learn more
-
-* Learn how to use the iecf [service directory]{@tutorial service-directory}
 
 [1]: http://mqtt.org/
 [2]: http://zguide.zeromq.org/

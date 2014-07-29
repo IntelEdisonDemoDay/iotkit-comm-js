@@ -16,11 +16,11 @@
  * prints out the message sent back by the server.
  * @see example/basic-client-server/server.js
  */
-var iecf = require('iecf');
+var iotkit = require('iotkit-comm');
 var path = require('path');
 
-var query = new iecf.ServiceQuery(path.join(__dirname, "server-spec.json"));
-iecf.createClient(query, function (client) {
+var query = new iotkit.ServiceQuery(path.join(__dirname, "server-query.json"));
+iotkit.createClient(query, function (client) {
   client.comm.setReceivedMessageHandler(function (message, context) {
     console.log("received from server: " + message.toString());
     client.comm.send("hello");

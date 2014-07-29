@@ -1,4 +1,4 @@
-Writing a service using iecf requires three fundamental steps:
+Writing a service using iotkit-comm requires three fundamental steps:
 1. Write a service specification
 2. Create a service based on that specification
 3. Run the service
@@ -27,10 +27,10 @@ the service will run, the name of the service, the protocol it will use to commu
 Now here's the source code for the service itself (place in `server.js`):
 
 ```js
-var iecf = require('iecf');
+var iotkit-comm = require('iotkit-comm');
 var path = require('path');
-var spec = new iecf.ServiceSpec(path.join(__dirname, "server-spec.json"));
-iecf.createService(spec, function (service) {
+var spec = new iotkit.ServiceSpec(path.join(__dirname, "server-spec.json"));
+iotkit.createService(spec, function (service) {
   service.comm.setReceivedMessageHandler(function(client, msg, context) {
     console.log("received from client: " + msg.toString());
     service.comm.sendTo(client, "hi");
@@ -40,12 +40,12 @@ iecf.createService(spec, function (service) {
 
 Notice that the service does not need to worry about *how* messages will be delivered,
 it only needs to worry about the contents of those messages. Specifying `zmqreqrep` in the `type.name` field of the
-specification is enough to let iecf know how to send messages. The underlying communication details are
+specification is enough to let iotkit-comm know how to send messages. The underlying communication details are
 handled by *communication plugins*; in this case, the communication plugin (`service.comm`) is an instance of the
 `zmqreqrep` plugin. More on communication plugins later, but for now, it is enough to understand that all
 communication plugins provide functions like `send` and `sendTo`. The main difference between the various
 communication plugins is *how* the `send` and `sendTo` happen (e.g. different packet format and headers). Note that
-iecf comes bundled with a few default communication plugins, but its also easy to write your own if necessary.
+iotkit-comm comes bundled with a few default communication plugins, but its also easy to write your own if necessary.
 
 #### Run the service
 

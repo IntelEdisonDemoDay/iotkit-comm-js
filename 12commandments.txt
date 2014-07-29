@@ -1,4 +1,4 @@
-Edison says that when programming in Javascript follow the 12 commandments:
+iotkit-comm says that when programming in Javascript follow the 12 commandments:
 
 1. Objects and filenames should have one-to-one correspondence. Please don't relax this rule unless you think it will improve code clarity in your specific scenario.
 2. Objects must have a constructor with a capitalized name

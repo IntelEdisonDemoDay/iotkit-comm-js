@@ -14,7 +14,7 @@
  */
 
 /**
- * Tests mdns service discovery and advertisement.
+ * Tests mDNS service discovery and advertisement.
  * @module test/mdns
  * @see {@link module:test/mdns~discover}
  * @see {@link module:test/mdns~discover_connect}
@@ -27,7 +27,7 @@ var expect = require('chai').expect;
 describe('[mdns]', function () {
 
   /**
-   * Dummy service to test mdns service discovery and advertisement. This service is a mini MQTT broadcast
+   * Dummy service to test mDNS service discovery and advertisement. This service is a mini MQTT broadcast
    * broker.
    * @see {@link module:test/mdns~discover}
    * @see {@link module:test/mdns~discover_connect}
@@ -35,10 +35,10 @@ describe('[mdns]', function () {
    */
   function dummyService () {
     var path = require('path');
-    var iecf = require('iecf');
+    var iotkit = require('iotkit-comm');
 
-    var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/9889-dummy-service-spec.json"));
-    iecf.createService(spec, function (service) {
+    var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/9889-dummy-service-spec.json"));
+    iotkit.createService(spec, function (service) {
       "use strict";
 
       var clients = {};
@@ -92,7 +92,7 @@ describe('[mdns]', function () {
   // Since the service we want to discover is not restarted between tests, just restart the
   // service browser for each test.
   beforeEach(function() {
-    var iecf = require('iecf');
+    var iotkit = require('iotkit-comm');
   });
 
   describe('#discover', function () {
@@ -102,9 +102,9 @@ describe('[mdns]', function () {
      * @function module:test/mdns~discover
      */
     it("should be able to find a service for the given query", function(done) {
-      var iecf = require('iecf');
-      var serviceDirectory = new iecf.ServiceDirectory();
-      var query = new iecf.ServiceQuery(path.join(__dirname, "resources/queries/dummy-service-query.json"));
+      var iotkit = require('iotkit-comm');
+      var serviceDirectory = new iotkit.ServiceDirectory();
+      var query = new iotkit.ServiceQuery(path.join(__dirname, "resources/queries/dummy-service-query.json"));
       serviceDirectory.discoverServices(query, function (serviceSpec) {
         expect(serviceSpec.properties.dataType).to.equal("float");
         done();
@@ -115,23 +115,23 @@ describe('[mdns]', function () {
   describe('#discover-connect', function () {
     /**
      * Tests if a service can be found and connected to on the LAN. Expects a dummy service to be
-     * running on the LAN and advertising itself. Notice that in IECF, no explicit IP
-     * addresses or protocol specific code is needed to connect to a service. Connecting to a service of
+     * running on the LAN and advertising itself. Notice that in iotkit, no explicit IP
+     * addresses or protocol-specific code is needed to connect to a service. Connecting to a service of
      * a given type requires only that the service query mention that type.
      * @function module:test/mdns~discover_connect
      * @see {@tutorial service-spec-query}
      */
     it("should be able to find a service for the given query and connect to it", function(done) {
-      var iecf = require('iecf');
+      var iotkit = require('iotkit-comm');
 
-      var serviceDirectory = new iecf.ServiceDirectory();
-      var query = new iecf.ServiceQuery(path.join(__dirname, "resources/queries/dummy-service-query.json"));
+      var serviceDirectory = new iotkit.ServiceDirectory();
+      var query = new iotkit.ServiceQuery(path.join(__dirname, "resources/queries/dummy-service-query.json"));
       serviceDirectory.discoverServices(query, function (serviceSpec) {
         "use strict";
 
         expect(serviceSpec.properties.dataType).to.equal("float");
 
-        iecf.createClient(serviceSpec, function (client) {
+        iotkit.createClient(serviceSpec, function (client) {
 
           client.comm.subscribe("mytopic");
 

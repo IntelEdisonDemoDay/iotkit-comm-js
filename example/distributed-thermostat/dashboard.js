@@ -12,21 +12,21 @@
  */
 
 /**
- * @file a dummy 'dashboard' to display mean temperature received from
+ * @file A dummy 'dashboard' to display mean temperature received from
  * the thermostat. In this example, the thermostat is receiving temperatures
  * published periodically by sensors and computing a cumulative mean of the
  * temperature data. The latest mean is then published as and when it is computed
  * @see {@link example/distributed-thermostat/thermostat.js}
  */
 
-var iecf = require('iecf');
+var iotkit = require('iotkit-comm');
 
 // create service query to find the thermostat
-var thermostatQuery = new iecf.ServiceQuery('thermostat-query.json');
+var thermostatQuery = new iotkit.ServiceQuery('thermostat-query.json');
 
 // create a client that subscribes to the mean temperature
 // from the thermostat
-iecf.createClient(thermostatQuery, function (client) {
+iotkit.createClient(thermostatQuery, function (client) {
   client.comm.setReceivedMessageHandler(msgHandler);
   client.comm.subscribe("mean_temp");
 });

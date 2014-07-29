@@ -1,11 +1,11 @@
 *Prerequisites for understanding this tutorial are the [client]{@tutorial client}, [service]{@tutorial service},
 and [service specification]{@tutorial service-spec-query} tutorials.*
 
-The iecf library allows applications to advertise and query for services on the LAN; these features are
-provided as part of the iecf *service directory*. Normally, the advertising and querying happen automatically as a
+The iotkit-comm library allows applications to advertise and query for services on the LAN; these features are
+provided as part of the iotkit-comm *service directory*. Normally, the advertising and querying happen automatically as a
 part of `createService` or `createClient`. However, there are certain situations in which you might want to use the
 service directory independent of creating a client or service. For example, your service may want to speak a protocol
- that is not implemented as an iecf plugin. In this scenario, you would use the service directory to advertise and
+ that is not implemented as an iotkit-comm plugin. In this scenario, you would use the service directory to advertise and
  find services, but implement your own communication protocol. Consider the following specification for a simple
  echo server (`9888-service-custom-comm.json`) that uses `myprotocol` to communicate:
 
@@ -23,8 +23,8 @@ service directory independent of creating a client or service. For example, your
 and here's the code for the server:
 
 ```js
-var iecf = require('iecf');
-var spec = new iecf.ServiceSpec(path.join(__dirname, "9888-service-custom-comm.json"));
+var iotkit = require('iotkit-comm');
+var spec = new iotkit.ServiceSpec(path.join(__dirname, "9888-service-custom-comm.json"));
 var net = require('net');
 var server = net.createServer(function (c) { //'connection' listener
   c.on('data', function (msg) {
@@ -32,19 +32,19 @@ var server = net.createServer(function (c) { //'connection' listener
   });
 });
 server.listen(spec.port, function () {
-  var directory = new iecf.ServiceDirectory();
+  var directory = new iotkit.ServiceDirectory();
   directory.advertiseService(spec);
 });
 ```
 
 You can see that the server above creates its own sockets and event handlers, something that is usually done by an
-iecf communication plugin. Also notice the last three lines where `iecf.ServiceDirectory` is used to advertise the
+iotkit-comm communication plugin. Also notice the last three lines where `iotkit.ServiceDirectory` is used to advertise the
 service. Now, here's the code for the corresponding client:
 
 ```js
-var iecf = require('iecf');
-var serviceDirectory = new iecf.ServiceDirectory();
-var query = new iecf.ServiceQuery(path.join(__dirname, "resources/serviceQueries/service-query-custom-comm.json"));
+var iotkit = require('iotkit-comm');
+var serviceDirectory = new iotkit.ServiceDirectory();
+var query = new iotkit.ServiceQuery(path.join(__dirname, "resources/serviceQueries/service-query-custom-comm.json"));
 serviceDirectory.discoverServices(query, function (serviceSpec) {
   var net = require('net');
   var client = net.connect({port: serviceSpec.port, host: serviceSpec.address},

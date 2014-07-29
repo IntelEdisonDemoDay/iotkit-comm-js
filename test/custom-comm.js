@@ -26,15 +26,15 @@ var expect = require('chai').expect;
 describe('[customComm]', function () {
 
   /**
-   * Service that uses iecf service directory to advertise itself, but implements
+   * Service that uses iotkit service directory to advertise itself, but implements
    * it own communication protocol (i.e. no communication plugin is used).
    * @function module:test/customComm~service
    * @see {@link module:test/customComm~client}
    */
   function customCommService() {
     // read service specification
-    var iecf = require('iecf');
-    var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/9888-service-custom-comm.json"));
+    var iotkit = require('iotkit-comm');
+    var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/9888-service-custom-comm.json"));
 
     // create service
     var net = require('net');
@@ -47,7 +47,7 @@ describe('[customComm]', function () {
     // start service
     server.listen(spec.port, function () {
       // advertise service on LAN
-      var directory = new iecf.ServiceDirectory();
+      var directory = new iotkit.ServiceDirectory();
       directory.advertiseService(spec);
     });
   }
@@ -59,15 +59,15 @@ describe('[customComm]', function () {
   /**
    * Client to a service that's using a custom communication protocol (i.e. not using a plugin).
    * This client assumes that the service is advertising itself on the LAN (using
-   * the iecf service directory)
+   * the iotkit service directory)
    * @function module:test/customComm~client
    * @see {@link module:test/customComm~service}
    */
   it("should successfully create client that connects to above service",
     function (done) {
-      var iecf = require('iecf');
-      var serviceDirectory = new iecf.ServiceDirectory();
-      var query = new iecf.ServiceQuery(path.join(__dirname, "resources/queries/service-query-custom-comm.json"));
+      var iotkit = require('iotkit-comm');
+      var serviceDirectory = new iotkit.ServiceDirectory();
+      var query = new iotkit.ServiceQuery(path.join(__dirname, "resources/queries/service-query-custom-comm.json"));
       serviceDirectory.discoverServices(query, function (serviceSpec) {
         var net = require('net');
         var client = net.connect({port: serviceSpec.port, host: serviceSpec.address},

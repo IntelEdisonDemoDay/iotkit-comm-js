@@ -16,11 +16,11 @@
  * by the corresponding client.
  * @see example/basic-client-server/client.js
  */
-var iecf = require('iecf');
+var iotkit = require('iotkit-comm');
 var path = require('path');
 
-var spec = new iecf.ServiceSpec(path.join(__dirname, "server-spec.json"));
-iecf.createService(spec, function (service) {
+var spec = new iotkit.ServiceSpec(path.join(__dirname, "server-spec.json"));
+iotkit.createService(spec, function (service) {
   service.comm.setReceivedMessageHandler(function(client, msg, context) {
     console.log("received from client: " + msg.toString());
     service.comm.sendTo(client, "hi");

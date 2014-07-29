@@ -12,11 +12,11 @@
  */
 
 /**
- * Tests the mqtt plugin using various clients. The clients assume that an mqtt broker already exists. For this
- * test suite, the mosquitto broker and a mini broker built using the iecf library is used. The suite features clients
+ * Tests the MQTT plugin using various clients. The clients assume that an MQTT broker already exists. For this
+ * test suite, the mosquitto broker and a mini broker built using the iotkit library is used. The suite features clients
  * that connect directly to a broker at a known address, clients that discover a broker and connect to it, and clients
- * that connect to a broker that is being used as a proxy by another client (essentially this client is acting like a
- * service by using the broker as a proxy).
+ * that connect to a broker that is being used as a proxy by another client (Essentially, this client is acting like a
+ * service by using the broker as a proxy.)
  * @module test/mqtt
  * @see {@link module:test/mqtt~direct_publisher}
  * @see {@link module:test/mqtt~direct_subscriber}
@@ -41,10 +41,10 @@ describe('[mqtt]', function () {
    */
   function mqttMiniBroker() {
     var path = require('path');
-    var iecf = require('iecf');
+    var iotkit = require('iotkit-comm');
 
-    var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/1889-mqtt-mini-broker-spec.json"));
-    iecf.createService(spec, function (service) {
+    var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/1889-mqtt-mini-broker-spec.json"));
+    iotkit.createService(spec, function (service) {
       var clients = {};
 
       service.comm.setReceivedMessageHandler(function(client, msg, context) {
@@ -104,10 +104,10 @@ describe('[mqtt]', function () {
      */
     it("should successfully publish to mosquitto broker",
       function(done) {
-        var iecf = require('iecf');
+        var iotkit = require('iotkit-comm');
 
-        var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/1883-mqtt-broker-spec.json"));
-        iecf.createClient(spec, function (client) {
+        var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/1883-mqtt-broker-spec.json"));
+        iotkit.createClient(spec, function (client) {
           setInterval(function () {
             "use strict";
             client.comm.send("my other message", {topic: "mytopic"});
@@ -127,10 +127,10 @@ describe('[mqtt]', function () {
      */
     it("should successfully subscribe to data from mosquitto broker",
       function(done) {
-        var iecf = require('iecf');
+        var iotkit = require('iotkit-comm');
 
-        var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/1883-mqtt-broker-spec.json"));
-        iecf.createClient(spec, function (client) {
+        var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/1883-mqtt-broker-spec.json"));
+        iotkit.createClient(spec, function (client) {
           client.comm.subscribe("mytopic");
           client.comm.setReceivedMessageHandler(function(message, context) {
             "use strict";
@@ -156,16 +156,16 @@ describe('[mqtt]', function () {
      */
     it("should successfully discover and interact with mini broker using one client",
       function(done) {
-        var iecf = require('iecf');
+        var iotkit = require('iotkit-comm');
 
-        var serviceDirectory = new iecf.ServiceDirectory();
-        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/queries/mqtt-mini-broker-query.json"));
+        var serviceDirectory = new iotkit.ServiceDirectory();
+        var query = new iotkit.ServiceQuery(path.join(__dirname, "resources/queries/mqtt-mini-broker-query.json"));
 
         // explicitly discover service first. This can be skipped; see other tests that show
         // how to discover and connect automatically.
         serviceDirectory.discoverServices(query, function (serviceSpec) {
           // once service has been discovered, connect to it
-          iecf.createClient(serviceSpec, function (client) {
+          iotkit.createClient(serviceSpec, function (client) {
 
             // client subscribes to a topic
             client.comm.subscribe("mytopic");
@@ -202,10 +202,10 @@ describe('[mqtt]', function () {
      */
     it("should discover and publish data to mini broker",
       function(done) {
-        var iecf = require('iecf');
+        var iotkit = require('iotkit-comm');
 
-        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/queries/mqtt-mini-broker-query.json"));
-        iecf.createClient(query, function (client) {
+        var query = new iotkit.ServiceQuery(path.join(__dirname, "resources/queries/mqtt-mini-broker-query.json"));
+        iotkit.createClient(query, function (client) {
             setInterval(function () {
               client.comm.send("my other other message", {topic: "mytopic"});
             }, 200);
@@ -226,9 +226,9 @@ describe('[mqtt]', function () {
      */
     it("should discover and subscribe to data from mini broker",
       function (done) {
-        var iecf = require('iecf');
-        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/queries/mqtt-mini-broker-query.json"));
-        iecf.createClient(query, function (client) {
+        var iotkit = require('iotkit-comm');
+        var query = new iotkit.ServiceQuery(path.join(__dirname, "resources/queries/mqtt-mini-broker-query.json"));
+        iotkit.createClient(query, function (client) {
             client.comm.subscribe("mytopic");
             client.comm.setReceivedMessageHandler(function(message, context) {
               "use strict";
@@ -251,16 +251,16 @@ describe('[mqtt]', function () {
     /**
      * Client publishes temperature data to a local broker and advertises itself as a temperature service.
      * The client does this by using the broker as a proxy. Make sure the local broker is running on port '1883'.
-     * Note: on the Edison, a local broker should already be running on port '1883'.
+     * Note: On the Edison, a local broker should already be running on port '1883'.
      * @function module:test/mqtt~client_as_a_service
      */
     it("should allow a client to act like a service by advertising the broker (proxies for client)",
       function(done) {
-        var iecf = require('iecf');
-        var serviceDirectory = new iecf.ServiceDirectory();
-        var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/1883-temp-service-via-broker.json"));
+        var iotkit = require('iotkit-comm');
+        var serviceDirectory = new iotkit.ServiceDirectory();
+        var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/1883-temp-service-via-broker.json"));
         serviceDirectory.advertiseService(spec);
-        iecf.createClient(spec, function (client) {
+        iotkit.createClient(spec, function (client) {
           setInterval(function () {
             client.comm.send("30 deg F", {topic: spec.name});
           }, 200);
@@ -277,10 +277,10 @@ describe('[mqtt]', function () {
      */
     it("should allow a client to subscribe to data from a client acting as a service (broker is proxying)",
       function (done) {
-        var iecf = require('iecf');
+        var iotkit = require('iotkit-comm');
 
-        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/queries/temp-service-query-mqtt.json"));
-        iecf.createClient(query, function (client) {
+        var query = new iotkit.ServiceQuery(path.join(__dirname, "resources/queries/temp-service-query-mqtt.json"));
+        iotkit.createClient(query, function (client) {
           client.comm.subscribe(client.spec.name);
           client.comm.setReceivedMessageHandler(function (message, context) {
             "use strict";

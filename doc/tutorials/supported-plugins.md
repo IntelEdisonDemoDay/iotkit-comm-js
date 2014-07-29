@@ -1,4 +1,4 @@
-At the moment, iecf supports only *communication plugins*. The following communication plugins are supported:
+At the moment, iotkit-comm supports only *communication plugins*. The following communication plugins are supported:
 
 * {@link module:plugins/mqtt}
 * {@link module:plugins/zmqpubsub}

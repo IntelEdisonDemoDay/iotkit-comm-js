@@ -1,4 +1,4 @@
-To start working with the iecf library, you will need to:
+To start working with the iotkit-comm library, you will need to:
 
   1. Install it
   2. Write a "hello world" program (optional)
@@ -7,15 +7,15 @@ To start working with the iecf library, you will need to:
 
 ### Install it
 
-No installation is required on the Edison device *(support for other platforms coming soon)*.
+No installation is required on the Intel<sup>&reg;</sup> Edison device *(support for other platforms coming soon)*.
 
 ### Write a "hello world" program
 
 `helloworld.js`:
 
 ```
-var iecf = require('iecf');
-console.log(iecf.sayhello());
+var iotkit = require('iotkit-comm');
+console.log(iotkit.sayhello());
 ```
 
 Then, in a terminal:
@@ -26,19 +26,18 @@ node helloworld.js
 
 ### Run a sample program
 
-On the Edison device, iecf sample programs can be found in `/usr/share/iecf-js/examples`. On
-other platforms, they should most likely be in `/usr/local/lib/node_modules/iecf/example`. Here is how you
-run the distributed thermostat sample application included in the iecf sources:
+Included in the iotkit-comm sources is a sample application for a thermostat that receives temperature
+readings from several remote sensors. Here is how to run this sample application:
 
 ```bash
-$ cd path-to-examples-directory # see above
+$ cd /usr/share/iotkit-comm-js/examples
 $ node temperature-sensor.js
 ```
 
 Then, in another terminal:
 
 ```
-$ cd path-to-examples-directory
+$ cd /usr/share/iotkit-comm-js/examples
 $ node thermostat.js
 ```
 
@@ -61,7 +60,7 @@ include their temperature data in the mean.
 1. Write a [server]{@tutorial service}
 1. Write a [client]{@tutorial client}
 1. Understand [service specifications and queries]{@tutorial service-spec-query} **(important)**
-1. Learn to write a [distributed application]{@tutorial apps} using iecf
+1. Learn to write a [distributed application]{@tutorial apps} using iotkit-comm
 1. Learn to publish data to the [cloud]{@tutorial cloud}
-1. Study the unit tests included in the iecf sources *(coming soon)*
-1. Understand the iecf architecture *(coming soon)*
+1. Study the unit tests included in the iotkit-comm sources *(coming soon)*
+1. Understand the iotkit-comm architecture *(coming soon)*

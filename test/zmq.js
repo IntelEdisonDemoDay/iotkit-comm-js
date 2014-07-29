@@ -34,11 +34,11 @@ describe('[zmq]', function () {
    * @see {@link module:test/zmq~subscriber}
    */
   function publisher() {
-    var iecf = require('iecf');
+    var iotkit = require('iotkit-comm');
     var path = require('path');
 
-    var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/1885-temp-service-zmq-pubsub.json"));
-    iecf.createService(spec, function (service) {
+    var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/1885-temp-service-zmq-pubsub.json"));
+    iotkit.createService(spec, function (service) {
       "use strict";
 
       setInterval(function () {
@@ -56,11 +56,11 @@ describe('[zmq]', function () {
    * @see {@link module:test/zmq~replier}
    */
   function replier() {
-    var iecf = require('iecf');
+    var iotkit = require('iotkit-comm');
     var path = require('path');
 
-    var spec = new iecf.ServiceSpec(path.join(__dirname, "resources/specs/8333-temp-service-zmq-reqrep.json"));
-    iecf.createService(spec, function (service) {
+    var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/8333-temp-service-zmq-reqrep.json"));
+    iotkit.createService(spec, function (service) {
       "use strict";
 
       service.comm.setReceivedMessageHandler(function(client, msg, context) {
@@ -81,7 +81,7 @@ describe('[zmq]', function () {
   // Since the service we want to discover is not restarted between tests, just restart the
   // service browser for each test.
   beforeEach(function() {
-    var iecf = require('iecf');
+    var iotkit = require('iotkit-comm');
   });
 
   describe('#subscriber', function () {
@@ -92,9 +92,9 @@ describe('[zmq]', function () {
      */
     it("should successfully subscribe to messages from ZMQ publisher",
       function(done) {
-        var iecf = require('iecf');
-        var query = new iecf.ServiceQuery(path.join(__dirname, "resources/queries/temp-service-query-zmq-pubsub.json"));
-        iecf.createClient(query, function (client) {
+        var iotkit = require('iotkit-comm');
+        var query = new iotkit.ServiceQuery(path.join(__dirname, "resources/queries/temp-service-query-zmq-pubsub.json"));
+        iotkit.createClient(query, function (client) {
             "use strict";
 
             client.comm.subscribe("mytopic");
@@ -124,9 +124,9 @@ describe('[zmq]', function () {
      * @function module:test/zmq~requester
      */
     it("should successfully receive reply from a ZMQ replier", function(done) {
-      var iecf = require('iecf');
-      var query = new iecf.ServiceQuery(path.join(__dirname, "resources/queries/temp-service-query-zmq-reqrep.json"));
-      iecf.createClient(query,
+      var iotkit = require('iotkit-comm');
+      var query = new iotkit.ServiceQuery(path.join(__dirname, "resources/queries/temp-service-query-zmq-reqrep.json"));
+      iotkit.createClient(query,
         function (client) {
           client.comm.setReceivedMessageHandler(function(message, context) {
             "use strict";

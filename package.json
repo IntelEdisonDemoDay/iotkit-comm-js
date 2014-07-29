@@ -1,7 +1,7 @@
 {
-  "name": "iecf",
+  "name": "iotkit-comm",
   "version": "0.2.0",
-  "description": "The Intel Edison Connectivity Framework (IECF) allows Edison devices to conveniently discover and communicate with each other and the cloud",
+  "description": "Allows Intel Edison devices to conveniently discover and communicate with each other and the cloud",
   "main": "lib/main.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha -R spec -t 3000 -S; echo Done.",

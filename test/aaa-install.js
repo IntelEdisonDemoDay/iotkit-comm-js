@@ -12,9 +12,9 @@
  */
 
 /**
- * Tests if the Edison library is correctly installed. File is named
+ * Tests if the  library is correctly installed. File is named
  * aaa-install.js so that when the test runner ('mocha') sorts test files, this
- * one will be run first. If any test in this suite fails, please ignore errors
+ * one will be run first. If any test in this suite fails, ignore errors
  * in the rest of the tests.
  * @module test/install
  * @see module:test/install~configuration
@@ -25,18 +25,18 @@ var expect = require('chai').expect;
 
 describe('[install]', function () {
   beforeEach(function () {
-    // will need to reload 'iecf' each time, instead of using
+    // will need to reload 'iotkit-comm' each time, instead of using
     // cached version like node would prefer.
-    var name = require.resolve('iecf');
+    var name = require.resolve('iotkit-comm');
     delete require.cache[name];
   });
 
   /**
    * @function module:test/install~configuration
    */
-  it("should verify if edison library is correctly installed", function (done) {
-    var iecf = require('iecf');
-    expect(iecf.sayhello()).to.equal("Hello Edison user!");
+  it("should verify if  library is correctly installed", function (done) {
+    var iotkit = require('iotkit-comm');
+    expect(iotkit.sayhello()).to.equal("Hello Edison user!");
     done();
   });
 
@@ -50,7 +50,7 @@ describe('[install]', function () {
       delete process.env.HOME;
     }
 
-    var iecf = require('iecf');
+    var iotkit = require('iotkit-comm');
 
     if (savedhome)
       process.env.HOME = savedhome;

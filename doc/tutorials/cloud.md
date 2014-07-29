@@ -12,7 +12,7 @@ To publish data to the cloud, you will need to:
 
 Go to Intel's [enableiot cloud][1] site and follow instructions to create an account. Once an account is created,
 an `activation key` will be available in the account details section ![account details](../images/cloud-account-details
-.png). Note down this activation key.
+.png). Record this activation key.
 
 #### Register your Edison
 
@@ -29,7 +29,7 @@ systemctl start iotkit-agent
 
 #### Publish data
 
-*This section assumes that you know how to write a client application using iecf. If not,
+*This section assumes that you know how to write a client application using iotkit-comm. If not,
 please go through the [client]{@tutorial client} tutorial first.*
 
 Create a service specification for the cloud (`enableiot-cloud-spec.json`):
@@ -48,9 +48,9 @@ Create a service specification for the cloud (`enableiot-cloud-spec.json`):
 Write the code to publish data:
 
 ```js
-      var iecf = require('iecf');
-      var spec = new iecf.ServiceSpec("enableiot-cloud-spec.json");
-      iecf.createClient(spec, function (client) {
+      var iotkit = require('iotkit-comm');
+      var spec = new iotkit.ServiceSpec("enableiot-cloud-spec.json");
+      iotkit.createClient(spec, function (client) {
         client.comm.registerSensor("garage","temperature.v1.0");
         client.comm.publish(JSON.stringify({"n": "garage","v": 68}));
       });

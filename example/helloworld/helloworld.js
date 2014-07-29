@@ -15,5 +15,5 @@
  * @file A basic "hello world" program
  */
 
-var iecf = require('iecf');
-console.log(iecf.sayhello());
+var iotkit = require('iotkit-comm');
+console.log(iotkit.sayhello());

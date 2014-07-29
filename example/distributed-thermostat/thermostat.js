@@ -21,18 +21,18 @@
  * @see {@link example/distributed-thermostat/dashboard.js}
  * @see {@link http://zeromq.org/}
  */
-var iecf = require('iecf');
+var iotkit = require('iotkit-comm');
 
 // create a query for temperature sensors on the network
 // the query in 'temperature-sensor-query.json' looks for only those sensors
 // that are publishing ambient floating-point temperatures.
-var sensorQuery = new iecf.ServiceQuery('temperature-sensor-query.json');
+var sensorQuery = new iotkit.ServiceQuery('temperature-sensor-query.json');
 
 // no. of sensors this thermostat is subscribing to
 var sensorCount = 0;
 
 // maybe better to use a simple moving average, but then again,
-// this is just a demo of how to use iecf
+// this is just a demo of how to use iotkit
 var cumulativeMovingAverage = 0;
 
 // no. of temperature samples received from all sensors until now
@@ -44,7 +44,7 @@ var mypublisher = null;
 // whenever a temperature sensor is found, the callback is called with a new
 // 'client' instance. This instance can be used to communicate
 // with the corresponding sensor.
-iecf.createClient(sensorQuery, function (client) {
+iotkit.createClient(sensorQuery, function (client) {
 
   console.log("Found new temperature sensor - " + client.spec.address + ':' + client.spec.port);
 
@@ -95,7 +95,7 @@ function serviceFilter(serviceSpec) {
 }
 
 // create the service that will publish the latest mean temperature
-var spec = new iecf.ServiceSpec('thermostat-spec.json');
-iecf.createService(spec, function (service) {
+var spec = new iotkit.ServiceSpec('thermostat-spec.json');
+iotkit.createService(spec, function (service) {
   mypublisher = service;
 });
