@@ -51,7 +51,7 @@ describe('[cloud]', function () {
     });
   });
 
-  describe.skip('[subscribe]', function () {
+  describe('[subscribe]', function () {
     /**
      * @function module:test/cloud~subscribe
      */
@@ -69,7 +69,7 @@ describe('[cloud]', function () {
         client.comm.setReceivedMessageHandler(function(message, context) {
           "use strict";
           var msgobj = JSON.parse(message);
-          expect(msgobj.data[0].value).to.equal('12345');
+          expect(msgobj.data[0].value).to.equal('68');
           done();
           client.comm.done();
         });
