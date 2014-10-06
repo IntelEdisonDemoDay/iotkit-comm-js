@@ -24,7 +24,7 @@
 var path = require('path');
 var expect = require('chai').expect;
 
-describe('[mdns]', function () {
+describe('[sanity][mdns]', function () {
 
   /**
    * Dummy service to test mDNS service discovery and advertisement. This service is a mini MQTT broadcast

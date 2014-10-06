@@ -23,7 +23,7 @@
 
 var expect = require('chai').expect;
 
-describe('[install]', function () {
+describe('[sanity][install]', function () {
   beforeEach(function () {
     // will need to reload 'iotkit-comm' each time, instead of using
     // cached version like node would prefer.
@@ -34,7 +34,7 @@ describe('[install]', function () {
   /**
    * @function module:test/install~configuration
    */
-  it("should verify if  library is correctly installed", function (done) {
+  it("should verify if library is correctly installed", function (done) {
     var iotkit = require('iotkit-comm');
     expect(iotkit.sayhello()).to.equal("Hello Edison user!");
     done();
