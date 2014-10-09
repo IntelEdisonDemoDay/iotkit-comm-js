@@ -7,5 +7,20 @@
       "clientFileSuffix": "client",
       "serverFileSuffix": "service"
     }
+  },
+  "stateDirName": "iotkit-comm",
+  "stateMapName": "state.json",
+  "auth": {
+    "keyDirSuffix": "_credentials",
+    "keyDirName": "iotkit-comm",
+    "CAName": "myca",
+    "privateKeyNameSuffix": "_key",
+    "hostKeyNameSuffix": "_host",
+    "clientKeyNameSuffix": "_client",
+    "SSLCertSuffix": ".crt",
+    "SSLCertReqSuffix": ".csr",
+    "SSHPubKeySuffix": ".pub",
+    "defaultUser": "root",
+    "SSHCertSuffix": "-cert"
   }
 }

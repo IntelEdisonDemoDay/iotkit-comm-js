@@ -10,6 +10,7 @@
     "docs": "./node_modules/.bin/jsdoc . -c jsdoc-conf.json README.md; echo Done.",
     "coverage": "./node_modules/.bin/istanbul cover --report html node_modules/.bin/_mocha -- -R Spec -t 3000 -S; echo Done."
   },
+  "bin": { "iotkit-comm" : "./lib/setup.js" },
   "engines": {
     "node": ">=0.10.28"
   },
@@ -17,7 +18,10 @@
   "dependencies": {
     "mdns2": ">=2.1.3",
     "mqtt": ">=0.3.8",
-    "zmq": ">=2.6.0"
+    "zmq": ">=2.6.0",
+    "commander": "*",
+    "read": "*",
+    "async": "*"
   },
   "devDependencies": {
     "chai": "*",
