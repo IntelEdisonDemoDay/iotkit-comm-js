@@ -29,23 +29,13 @@ describe('[cloud]', function () {
      */
     it("should successfully publish data to the cloud", function(done) {
       var iotkit = require('iotkit-comm');
-
       var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/1884-temp-service-enableiot-cloud.json"));
-
       var i = 68;
       var msg = "";
-      iotkit.createClient(spec, function (client) {
-        "use strict";
-
-        // Register a Sensor by specifying its name and its type
-        client.comm.registerSensor("garage","temperature.v1.0");
-
+      iotkit.createService(spec, function (service) {
         setInterval(function () {
-          "use strict";
-          msg = {"n": "garage","v": i};
-          client.comm.publish(JSON.stringify(msg));
+          service.comm.send(i);
         }, 500);
-
         done();
       });
     });
@@ -62,16 +52,10 @@ describe('[cloud]', function () {
       var i = 0;
       var msg = "";
       iotkit.createClient(spec, function (client) {
-        "use strict";
-
-        client.comm.subscribe();
-
         client.comm.setReceivedMessageHandler(function(message, context) {
-          "use strict";
-          var msgobj = JSON.parse(message);
-          expect(msgobj.data[0].value).to.equal('68');
-          done();
+          expect(message).to.equal(68);
           client.comm.done();
+          done();
         });
       });
     });

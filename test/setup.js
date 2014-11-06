@@ -11,9 +11,16 @@
  * more details.
  */
 
-/**
- * MQTT plugin
- * @see MQTTService
- * @see MQTTService
- * @module plugins/mqtt
- */
+var exec = require('child_process').exec;
+var expect = require('chai').expect;
+
+describe('[setup]', function () {
+  describe('#exists [sanity]', function () {
+    it("should successfully execute the setup command", function (done) {
+      exec("iotkit-comm", function(error, stdout, stderr) {
+        expect(error).to.not.be.ok;
+        done();
+      });
+    });
+  });
+});

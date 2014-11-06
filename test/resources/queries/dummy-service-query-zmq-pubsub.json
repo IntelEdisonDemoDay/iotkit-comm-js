@@ -1,5 +1,5 @@
 {
-  "name" : ".*cpuTemp.*",
+  "name" : ".*dummy.*",
   "type" : {
     "name": "zmqpubsub",
     "protocol" : "tcp"

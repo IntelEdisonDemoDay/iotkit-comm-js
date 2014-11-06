@@ -11,9 +11,19 @@
  * more details.
  */
 
-/**
- * MQTT plugin
- * @see MQTTService
- * @see MQTTService
- * @module plugins/mqtt
- */
+var mqtt = require ('mqtt');
+
+var calist = [];
+calist.push('/usr/local/iotkit-comm/myca_credentials/myca.crt');
+
+var opts = {
+  keyPath: '/Users/adua/.iotkit-comm/adua-mac01.local_adua_credentials/adua-mac01.local_adua_key',
+  certPath: '/Users/adua/.iotkit-comm/adua-mac01.local_adua_credentials/adua-mac01.local_adua_key.crt',
+  ca: calist
+};
+
+var client = mqtt.createSecureClient(8883, "adua-mac01.local", opts);
+
+setInterval(function () {
+  client.publish("/INTEL/NDG/temperature", "test message");
+}, 200);

@@ -36,16 +36,11 @@ describe('[zmq]', function () {
   function publisher() {
     var iotkit = require('iotkit-comm');
     var path = require('path');
-
     var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/1885-temp-service-zmq-pubsub.json"));
     iotkit.createService(spec, function (service) {
-      "use strict";
-
       setInterval(function () {
-        "use strict";
-        service.comm.publish("mytopic: my message", {});
+        service.comm.send("my message");
       }, 300);
-
     });
   }
 
@@ -61,11 +56,8 @@ describe('[zmq]', function () {
 
     var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/8333-temp-service-zmq-reqrep.json"));
     iotkit.createService(spec, function (service) {
-      "use strict";
-
-      service.comm.setReceivedMessageHandler(function(client, msg, context) {
-        "use strict";
-        service.comm.sendTo(client, "hi");
+      service.comm.setReceivedMessageHandler(function(msg, context, client) {
+        service.comm.send("hi");
       });
 
     });
@@ -95,14 +87,9 @@ describe('[zmq]', function () {
         var iotkit = require('iotkit-comm');
         var query = new iotkit.ServiceQuery(path.join(__dirname, "resources/queries/temp-service-query-zmq-pubsub.json"));
         iotkit.createClient(query, function (client) {
-            "use strict";
-
-            client.comm.subscribe("mytopic");
-
             client.comm.setReceivedMessageHandler(function(message, context) {
-              "use strict";
               expect(context.event).to.equal("message");
-              expect(message.toString()).to.equal("mytopic: my message");
+              expect(message.toString()).to.equal("my message");
 
               // close client connection
               client.comm.done();
@@ -129,7 +116,6 @@ describe('[zmq]', function () {
       iotkit.createClient(query,
         function (client) {
           client.comm.setReceivedMessageHandler(function(message, context) {
-            "use strict";
             expect(context.event).to.equal("message");
             expect(message.toString()).to.equal("hi");
             client.comm.done();

@@ -23,7 +23,7 @@
 
 var expect = require('chai').expect;
 
-describe('[sanity][install]', function () {
+describe('[install][sanity]', function () {
   beforeEach(function () {
     // will need to reload 'iotkit-comm' each time, instead of using
     // cached version like node would prefer.

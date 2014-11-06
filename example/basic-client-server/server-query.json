@@ -4,5 +4,6 @@
     "name": "zmqreqrep",
     "protocol": "tcp"
   },
-  "properties": {"dataType": "float", "unit": "F"}
+  "properties": {"dataType": "float", "unit": "F"},
+  "type_params": {"mustsecure": true}
 }

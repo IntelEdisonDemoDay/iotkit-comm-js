@@ -31,7 +31,7 @@ describe('[spec and query]', function () {
    */
   it("should validate a correct query without throwing an error", function() {
     var iotkit = require('iotkit-comm');
-    var query = new iotkit.ServiceQuery(path.join(__dirname, "resources/queries/mqtt-mini-broker-query.json"));
+    var query = new iotkit.ServiceQuery(path.join(__dirname, "resources/queries/temp-service-query-mqtt.json"));
     expect(query.name).to.be.a('string');
   });
 
@@ -40,7 +40,7 @@ describe('[spec and query]', function () {
    */
   it("should validate a correct spec without throwing an error", function() {
     var iotkit = require('iotkit-comm');
-    var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/1889-mqtt-mini-broker-spec.json"));
+    var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/1883-temp-service-mqtt.json"));
     expect(spec.name).to.be.a('string');
   });
 
@@ -50,7 +50,7 @@ describe('[spec and query]', function () {
   it("should fail if a query contains both address and port", function(done) {
     var iotkit = require('iotkit-comm');
     try {
-      var spec = new iotkit.ServiceQuery(path.join(__dirname, "resources/specs/1883-mqtt-broker-spec.json"));
+      var spec = new iotkit.ServiceQuery(path.join(__dirname, "resources/specs/temp-service-query-mqtt.json"));
     } catch (err) {
       done();
     }

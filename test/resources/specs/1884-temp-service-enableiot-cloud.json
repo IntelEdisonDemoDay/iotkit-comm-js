@@ -1,8 +1,6 @@
 {
+    "name" : "temperature.v1.0/garage_sensor",
     "type" : {
-        "name": "enableiot-cloud",
-        "protocol" : "tcp"
-    },
-    "address" : "127.0.0.1",
-    "port" : 1884
+        "name": "enableiot-cloud"
+    }
 }
