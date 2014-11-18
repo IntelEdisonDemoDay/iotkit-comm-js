@@ -30,11 +30,9 @@ describe('[cloud]', function () {
     it("should successfully publish data to the cloud", function(done) {
       var iotkit = require('iotkit-comm');
       var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/1884-temp-service-enableiot-cloud.json"));
-      var i = 68;
-      var msg = "";
       iotkit.createService(spec, function (service) {
         setInterval(function () {
-          service.comm.send(i);
+          service.comm.send(68);
         }, 500);
         done();
       });
@@ -47,13 +45,10 @@ describe('[cloud]', function () {
      */
     it("should successfully subscribe to data from the cloud", function(done) {
       var iotkit = require('iotkit-comm');
-
       var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/1884-temp-service-enableiot-cloud.json"));
-      var i = 0;
-      var msg = "";
       iotkit.createClient(spec, function (client) {
         client.comm.setReceivedMessageHandler(function(message, context) {
-          expect(message).to.equal(68);
+          expect(message).to.equal('68');
           client.comm.done();
           done();
         });

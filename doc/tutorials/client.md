@@ -64,5 +64,6 @@ node client.js
 
 * Write the corresponding [service]{@tutorial service}
 * Understand [service specifications and queries]{@tutorial service-spec-query} **(important)**
+* Configure your clients and services to [communicate securely]{@tutorial security}
 * Learn to write a more comprehensive [distributed application]{@tutorial apps}
 * Understand and write [communication plugins]{@tutorial plugin}

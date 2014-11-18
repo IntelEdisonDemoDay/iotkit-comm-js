@@ -10,19 +10,11 @@
  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
  * more details.
  */
-
-/**
- * @file Basic server that replies with the message 'hi' to any message sent
- * by the corresponding client.
- * @see example/basic-client-server/client.js
- */
-var iotkit = require('iotkit-comm');
 var path = require('path');
-
-var spec = new iotkit.ServiceSpec(path.join(__dirname, "server-spec.json"));
+var iotkit = require('iotkit-comm');
+var spec = new iotkit.ServiceSpec(path.join(__dirname, "garage-sensor-spec.json"));
 iotkit.createService(spec, function (service) {
-  service.comm.setReceivedMessageHandler(function(msg, context, client) {
-    console.log("received from client: " + msg.toString());
-    service.comm.send("hi");
-  });
+  setInterval(function () {
+    service.comm.send(68);
+  }, 500);
 });

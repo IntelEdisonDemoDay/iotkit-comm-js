@@ -27,7 +27,7 @@
   "devDependencies": {
     "chai": "*",
     "istanbul": "*",
-    "jsdoc": "<=3.3.0",
+    "jsdoc": "*",
     "mocha": "*"
   },
   "keywords": [
