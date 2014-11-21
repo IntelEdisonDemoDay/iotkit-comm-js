@@ -12,14 +12,15 @@
  */
 
 /**
- * A sensor service that publishes data to the cloud. A client
- * that subscribes to that data from the cloud. Needs iotkit-agent
- * running on the system (see [cloud tutorial]{@tutorial cloud}).
- *
- * @see {@link https://github.com/intel-iot-devkit/iotkit-agent/tree/dprelease}
- * @see {@link example/cloud/server.js}
- * @see {@link example/cloud/garage-sensor-spec.json}
- * @see {@link example/cloud/client.js}
- *
- * @module example/cloud
+ * @file A basic mqtt client that subscribes to messages from an mqtt service.
+ * @see example/mqtt/server.js
  */
+var iotkit = require('iotkit-comm');
+var path = require('path');
+
+var query = new iotkit.ServiceQuery(path.join(__dirname, "server-query.json"));
+iotkit.createClient(query, function (client) {
+  client.comm.setReceivedMessageHandler(function (message, context) {
+    console.log("received from server: " + message.toString());
+  });
+});

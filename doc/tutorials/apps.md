@@ -18,7 +18,7 @@ that portion of the code:
 ```js
 iotkit.createService(spec, function (service) {
   setInterval(function () {
-    service.comm.publish("mytemp: " + getRandomInt(60, 90));
+    service.comm.send(getRandomInt(60, 90));
   }, 1000);
 });
 ```
@@ -44,8 +44,7 @@ So now, here is what the service specification for our temperature sensor looks 
 {
   "name": "/my/home/thermostat/sensor",
   "type": {
-    "name": "zmqpubsub",
-    "protocol": "tcp"
+    "name": "zmqpubsub"
   },
   "port": 8999,
   "properties": {"dataType": "float", "unit": "F", "sensorType": "ambient"}
@@ -63,7 +62,6 @@ applications
     socket. The iotkit-comm library supports other protocols like `mqtt` and `zmqreqrep` that are implemented as
     "plugins". You are not required to use supported communication protocols, but it is quite convenient to do so.
     More on this in the {@tutorial plugin} tutorial.
-  * protocol *(compulsory)*: this is the transport protocol; only 'tcp' or 'udp' is supported
 * port *(compulsory)*: port number the service will run on
 * properties *(optional)*: any user-defined properties the service has. Each property must be a `"name": value` pair.
  Here, the properties indicate that the sensor is publishing the ambient temperature in Fahrenheit using a
@@ -95,14 +93,13 @@ To find the temperature sensors, the thermostat must query the network using a '
  very much like a service specification. Here's what a query for the temperature sensor looks like:
 
  ```json
- {
-   "name" : ".*thermostat/sensor",
-   "type" : {
-     "name": "zmqpubsub",
-     "protocol" : "tcp"
-   },
-   "properties": {"dataType": "float", "sensorType": "ambient"}
- }
+{
+  "name" : ".*thermostat/sensor",
+  "type" : {
+    "name": "zmqpubsub"
+  },
+  "properties": {"dataType": "float", "sensorType": "ambient"}
+}
  ```
 
  Using this query, an application will be able to find a service on the LAN that:
@@ -172,16 +169,14 @@ temperature sensors, it needs to receive and parse the temperature readings:
 iotkit.createClient(sensorQuery, function (client) {
   console.log("Found new temperature sensor - " + client.spec.address + ':' + client.spec.port);
   client.comm.setReceivedMessageHandler(msgHandler);
-  client.comm.subscribe("mytemp");
   function msgHandler(binmsg) {
     ...
   }
 }, serviceFilter);
 ```
 
-Here, the thermostat is subscribing to information published under the topic "mytemp". If you look at the source code
- for the temperature sensor, you will see that they are publishing temperature readings under this topic. As soon as
- a temperature reading arrives, the callback `msgHandler` is invoked:
+Here, the thermostat is subscribing to information published by the temperature sensor. As soon as a temperature
+reading arrives, the callback `msgHandler` is invoked:
 
 
 ```js
@@ -189,14 +184,16 @@ var cumulativeMovingAverage = 0;
 var sampleCount = 0;
 var mypublisher = null;
 
-function msgHandler(binmsg) {
-  var message = binmsg.toString();
-  var temperature = parseFloat(message.substring(message.indexOf(':') + 1));
+function msgHandler(msg) {
+  console.log("Received sample temperature " + msg + " from " +
+    client.spec.address + ":" + client.spec.port);
 
   sampleCount++;
-  cumulativeMovingAverage = (temperature + sampleCount * cumulativeMovingAverage)/(sampleCount + 1);
+  cumulativeMovingAverage = (parseInt(msg) + sampleCount * cumulativeMovingAverage) / (sampleCount + 1);
 
-  if (mypublisher) mypublisher.comm.publish("mean_temp: " + cumulativeMovingAverage);
+  console.log("New average ambient temperature (cumulative): " + cumulativeMovingAverage);
+
+  if (mypublisher) mypublisher.comm.send(cumulativeMovingAverage);
 }
 ```
 
@@ -221,8 +218,7 @@ specification:
 {
   "name": "/my/home/thermostat",
   "type": {
-    "name": "zmqpubsub",
-    "protocol": "tcp"
+    "name": "zmqpubsub"
   },
   "port": 9999,
   "properties": {"dataType": "float", "unit": "F"}
@@ -241,7 +237,6 @@ The dashboard is responsible for subscribing to the mean temperature published b
 var thermostatQuery = new iotkit.ServiceQuery('thermostat-query.json');
 iotkit.createClient(thermostatQuery, function (client) {
   client.comm.setReceivedMessageHandler(msgHandler);
-  client.comm.subscribe("mean_temp");
 });
 
 function msgHandler(binmsg) {
@@ -255,8 +250,7 @@ Here's the service query used to find the thermostat (in `thermostat-query.json`
 {
   "name" : "/my/home/thermostat",
   "type" : {
-    "name": "zmqpubsub",
-    "protocol" : "tcp"
+    "name": "zmqpubsub"
   }
 }
 ```

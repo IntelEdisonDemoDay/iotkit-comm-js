@@ -28,16 +28,9 @@ var thermostatQuery = new iotkit.ServiceQuery('thermostat-query.json');
 // from the thermostat
 iotkit.createClient(thermostatQuery, function (client) {
   client.comm.setReceivedMessageHandler(msgHandler);
-  client.comm.subscribe("mean_temp");
 });
 
 // print mean temperature received from the thermostat
-function msgHandler(binmsg) {
-  // in zmq messages are sent as binary buffers, convert to string first.
-  var message = binmsg.toString();
-
-  // remove the topic from the message content (the temperature)
-  var temperature = parseFloat(message.substring(message.indexOf(':') + 1));
-
-  console.log("Received mean temperature " + temperature);
+function msgHandler(msg) {
+  console.log("Received mean temperature " + msg);
 }

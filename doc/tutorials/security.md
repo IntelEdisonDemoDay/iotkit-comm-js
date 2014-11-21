@@ -21,7 +21,7 @@ root,edison2.local
 ```
 
 Of course, you would replace the `.local` addresses with the address of your Edisons. Also, please be sure to use
-address in the format `hostname.local` as opposed to raw IP addresses or 'localhost'. For more detailed help, just
+addresses in the format `hostname.local` as opposed to raw IP addresses or 'localhost'. For more detailed help, just
 type `iotkit-comm` on the command-line.
 
 #### Configure client programs to communicate securely
@@ -36,6 +36,7 @@ Add the following line to the [Service Query]{@tutorial service-spec-query} or
 "type_params": {"mustsecure": true}
 ```
 
-That's it! This client will now communicate securely with any server it connects to. Note that the service does not
+That's it! This client will now communicate securely with any server it connects to. This is true regardless of the
+plugin used to communicate (e.g. `mqtt`, `zmqpubsub`, `zmqreqrep`, etc.). Note that the service does not
 need any changes as long as the device its running on was configured using the `iotkit-comm setupAuthentication` script
 mentioned above.

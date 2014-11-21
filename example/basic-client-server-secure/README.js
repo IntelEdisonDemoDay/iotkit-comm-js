@@ -12,13 +12,15 @@
  */
 
 /**
- * A basic client and server program where a server replies to the client with a simple 'hi' message.
+ * A basic client and server program where a server replies to the client with a simple 'hi' message over a secure
+ * communication channel.
  *
  * @see Tutorial on writing a {@tutorial service}
  * @see Tutorial on writing a {@tutorial client}
- * @see {@link example/basic-client-server/server.js}
- * @see {@link example/basic-client-server/server-spec.json}
- * @see {@link example/basic-client-server/client.js}
- * @see {@link example/basic-client-server/server-query.json}
- * @module example/basicClientServer
+ * @see {@link example/basic-client-server-secure/server.js}
+ * @see {@link example/basic-client-server-secure/server-spec.json}
+ * @see {@link example/basic-client-server-secure/client.js}
+ * @see {@link example/basic-client-server-secure/server-query.json}
+ *
+ * @module example/basicClientServerSecure
  */

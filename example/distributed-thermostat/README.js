@@ -22,7 +22,11 @@
  *
  * @see Tutorial on writing a [distributed application]{@tutorial apps}
  * @see {@link example/distributed-thermostat/temperature-sensor.js}
+ * @see {@link example/distributed-thermostat/temperature-sensor-spec.js}
+ * @see {@link example/distributed-thermostat/temperature-sensor-query.js}
  * @see {@link example/distributed-thermostat/thermostat.js}
+ * @see {@link example/distributed-thermostat/thermostat-spec.js}
+ * @see {@link example/distributed-thermostat/thermostat-query.js}
  * @see {@link example/distributed-thermostat/dashboard.js}
  *
  * @module example/distributedThermostat

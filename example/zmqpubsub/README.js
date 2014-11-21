@@ -11,15 +11,17 @@
  * more details.
  */
 
+
 /**
- * A sensor service that publishes data to the cloud. A client
- * that subscribes to that data from the cloud. Needs iotkit-agent
- * running on the system (see [cloud tutorial]{@tutorial cloud}).
+ * A basic ZMQ publisher (service) that publishes messages and a ZMQ subscriber (client) that subscribes to those
+ * messages.
  *
- * @see {@link https://github.com/intel-iot-devkit/iotkit-agent/tree/dprelease}
- * @see {@link example/cloud/server.js}
- * @see {@link example/cloud/garage-sensor-spec.json}
- * @see {@link example/cloud/client.js}
+ * @see Tutorial on writing a {@tutorial service}
+ * @see Tutorial on writing a {@tutorial client}
+ * @see {@link example/zmqpubsub/server.js}
+ * @see {@link example/zmqpubsub/client.js}
+ * @see {@link example/zmqpubsub/server-query.js}
+ * @see {@link example/zmqpubsub/server-spec.js}
  *
- * @module example/cloud
+ * @module example/zmqpubsub
  */

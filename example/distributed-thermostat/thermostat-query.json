@@ -1,7 +1,6 @@
 {
   "name" : "/my/home/thermostat",
   "type" : {
-    "name": "zmqpubsub",
-    "protocol" : "tcp"
+    "name": "zmqpubsub"
   }
 }

@@ -51,29 +51,20 @@ iotkit.createClient(sensorQuery, function (client) {
   // When messages arrive, execute the given callback
   client.comm.setReceivedMessageHandler(msgHandler);
 
-  // subscribe to the topic under which the temperature sensors publish their temperature readings
-  client.comm.subscribe("mytemp");
+  function msgHandler(msg) {
 
-  function msgHandler(binmsg) {
-
-    // in zmq messages are sent as binary buffers, convert to string first.
-    var message = binmsg.toString();
-
-    // remove the topic from the message content (the temperature itself)
-    var temperature = parseFloat(message.substring(message.indexOf(':') + 1));
-
-    console.log("Received sample temperature " + temperature + " from " +
+    console.log("Received sample temperature " + msg + " from " +
       client.spec.address + ":" + client.spec.port);
 
     // compute the mean of the temperatures as they arrive
     sampleCount++;
-    cumulativeMovingAverage = (temperature + sampleCount * cumulativeMovingAverage) / (sampleCount + 1);
+    cumulativeMovingAverage = (parseInt(msg) + sampleCount * cumulativeMovingAverage) / (sampleCount + 1);
 
     console.log("New average ambient temperature (cumulative): " + cumulativeMovingAverage);
 
     // the master (thermostat) publishes the average temperature so others
     // can subscribe to it. See distributed-thermostat/dashboard.js
-    if (mypublisher) mypublisher.comm.publish("mean_temp: " + cumulativeMovingAverage);
+    if (mypublisher) mypublisher.comm.send(cumulativeMovingAverage);
   }
 }, serviceFilter);
 
@@ -87,7 +78,7 @@ function serviceFilter(serviceSpec) {
     return false;
 
   // will accept only 10 temperature sensors
-  if (sensorCount == 10) {
+  if (sensorCount === 10) {
     return false;
   }
   sensorCount++;

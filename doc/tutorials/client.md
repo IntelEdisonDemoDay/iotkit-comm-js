@@ -10,12 +10,11 @@ the following service query in the file `server-query.json`:
 
 ```json
 {
-  "name": "/ndg/temperature/cpuTemp",
+  "name": ".*server",
   "type": {
-    "name": "zmqreqrep",
-    "protocol": "tcp"
+    "name": "zmqreqrep"
   },
-  "properties": {"dataType": "float", "unit": "F"}
+  "properties": {"replymsg": "hi"}
 }
 ```
 
@@ -26,6 +25,7 @@ Now here's the source code for the client itself (place in `client.js`):
 ```js
 var iotkit = require('iotkit-comm');
 var path = require('path');
+
 var query = new iotkit.ServiceQuery(path.join(__dirname, "server-query.json"));
 iotkit.createClient(query, function (client) {
   client.comm.setReceivedMessageHandler(function (message, context) {
@@ -42,8 +42,8 @@ this client specifies the name of the service and the protocol the service shoul
 (`zmqreqrep`). When the service is found, iotkit-comm returns a client object with an appropriately initialized
 communication handle `client.comm`. This handle is an instance of the `zmqreqrep`
 plugin connected to the service in question. More on communication plugins later, but for now,
-it is enough to understand that all communication plugins provide functions like `send` and `sendTo`. The main
-difference between the various communication plugins is *how* the `send` and `sendTo` happen (e.g. different packet
+it is enough to understand that all communication plugins provide functions like `send`. The main
+difference between the various communication plugins is *how* the `send` happen (e.g. different packet
 format and headers). Note that iotkit-comm comes bundled with a few default communication plugins,
 but its also easy to write your own if necessary.
 

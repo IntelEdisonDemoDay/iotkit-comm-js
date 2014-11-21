@@ -12,14 +12,16 @@
  */
 
 /**
- * A sensor service that publishes data to the cloud. A client
- * that subscribes to that data from the cloud. Needs iotkit-agent
- * running on the system (see [cloud tutorial]{@tutorial cloud}).
- *
- * @see {@link https://github.com/intel-iot-devkit/iotkit-agent/tree/dprelease}
- * @see {@link example/cloud/server.js}
- * @see {@link example/cloud/garage-sensor-spec.json}
- * @see {@link example/cloud/client.js}
- *
- * @module example/cloud
+ * @file A basic ZMQ publisher (service) that publishes messages. ZMQ subscribers (clients) can then
+ * subscribe to those messages.
+ * @see example/zmqpubsub/client.js
  */
+var iotkit = require('iotkit-comm');
+var path = require('path');
+
+var spec = new iotkit.ServiceSpec(path.join(__dirname, "server-spec.json"));
+iotkit.createService(spec, function (service) {
+  setInterval(function () {
+    service.comm.send("hello");
+  }, 1000);
+});

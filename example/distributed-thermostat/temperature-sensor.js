@@ -37,7 +37,7 @@ iotkit.createService(spec, function (service) {
   // will eventually find this sensor and subscribe to the
   // temperature being published.
   setInterval(function () {
-    service.comm.publish("mytemp: " + getRandomInt(60, 90));
+    service.comm.send(getRandomInt(60, 90));
   }, 1000);
 });
 

@@ -63,7 +63,7 @@ iotkit-comm does not support advertising services in the cloud, so the 'cloud' f
 *how* messages are sent, thus allowing developers to focus more on the contents of those messages.
   * `name` *(compulsory)*: name of the protocol this service will be speaking; this is also the name of the
   corresponding communication plugin.
-  * protocol *(compulsory)*: this is the transport protocol; only 'tcp' or 'udp' is supported
+  * protocol: this is the transport protocol; only 'tcp' is supported.
 * type_params *(optional)*:  A communication plugin may support configuration parameters that can be set here. iotkit-comm
 passes this field "as-is" to the communication plugin.
 * port *(compulsory)*: port number the service will run on
@@ -97,7 +97,7 @@ let's go through each of the above attributes:
   * name *(compulsory)*: the higher level communication protocol the service uses. This allows the client to find only
    those services with which it can communicate. For example, a zmq subscriber will find only zmq publishers if it
    specifies `zmqpubsub` in the `type.name` field of the query (see [zeromq pub/sub sockets][2]).
-  * protocol *(compulsory)*: the transport layer protocol (only tcp or udp supported)
+  * protocol: the transport layer protocol (only tcp is supported)
 
 This query can then be passed to {@link module:main.createClient}, which will eventually return a client instance
 connected to the corresponding service.

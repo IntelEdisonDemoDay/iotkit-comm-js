@@ -10,16 +10,14 @@ the service will run, the name of the service, the protocol it will use to commu
  for the service we will be writing (place in `server-spec.json`):
 
  ```json
- {
-   "name": "/ndg/temperature/cpuTemp",
-   "type": {
-   "name": "zmqreqrep",
-   "protocol": "tcp"
- },
-   "port": 8333,
-   "properties": {"dataType": "float", "unit": "F"},
-   "advertise": {"locally": true, "cloud": false}
- }
+{
+  "name": "/ndg/echo/server",
+  "type": {
+  "name": "zmqreqrep"
+  },
+  "properties": {"replymsg": "hi"},
+  "port": 8333
+}
  ```
 
 #### Create a service based on that specification
@@ -27,13 +25,14 @@ the service will run, the name of the service, the protocol it will use to commu
 Now here's the source code for the service itself (place in `server.js`):
 
 ```js
-var iotkit-comm = require('iotkit-comm');
+var iotkit = require('iotkit-comm');
 var path = require('path');
+
 var spec = new iotkit.ServiceSpec(path.join(__dirname, "server-spec.json"));
 iotkit.createService(spec, function (service) {
-  service.comm.setReceivedMessageHandler(function(client, msg, context) {
+  service.comm.setReceivedMessageHandler(function(msg, context, client) {
     console.log("received from client: " + msg.toString());
-    service.comm.sendTo(client, "hi");
+    service.comm.send("hi");
   });
 });
 ```
@@ -43,8 +42,8 @@ it only needs to worry about the contents of those messages. Specifying `zmqreqr
 specification is enough to let iotkit-comm know how to send messages. The underlying communication details are
 handled by *communication plugins*; in this case, the communication plugin (`service.comm`) is an instance of the
 `zmqreqrep` plugin. More on communication plugins later, but for now, it is enough to understand that all
-communication plugins provide functions like `send` and `sendTo`. The main difference between the various
-communication plugins is *how* the `send` and `sendTo` happen (e.g. different packet format and headers). Note that
+communication plugins provide functions like `send`. The main difference between the various
+communication plugins is *how* the `send` happen (e.g. different packet format and headers). Note that
 iotkit-comm comes bundled with a few default communication plugins, but its also easy to write your own if necessary.
 
 #### Run the service

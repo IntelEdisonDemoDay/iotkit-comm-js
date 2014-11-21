@@ -12,14 +12,16 @@
  */
 
 /**
- * A sensor service that publishes data to the cloud. A client
- * that subscribes to that data from the cloud. Needs iotkit-agent
- * running on the system (see [cloud tutorial]{@tutorial cloud}).
+ * A basic MQTT subscriber (client) and publisher (server) that communicate via a
+ * local MQTT broker. To connect to another broker, populate 'address' and 'port' fields
+ * of the service query and service specification.
  *
- * @see {@link https://github.com/intel-iot-devkit/iotkit-agent/tree/dprelease}
- * @see {@link example/cloud/server.js}
- * @see {@link example/cloud/garage-sensor-spec.json}
- * @see {@link example/cloud/client.js}
+ * @see Tutorial on writing a {@tutorial service}
+ * @see Tutorial on writing a {@tutorial client}
+ * @see {@link example/mqtt/server.js}
+ * @see {@link example/mqtt/client.js}
+ * @see {@link example/mqtt/server-query.js}
+ * @see {@link example/mqtt/server-spec.js}
  *
- * @module example/cloud
+ * @module example/mqtt
  */
