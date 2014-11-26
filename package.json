@@ -37,7 +37,7 @@
     "communication"
   ],
   "author": "Intel Corporation",
-  "license": "LGPL",
+  "license": "MIT",
   "readmeFilename": "README.md",
   "directories": {
     "lib": "lib",
