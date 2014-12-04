@@ -67,8 +67,8 @@ iotkit.createClient(sensorQuery, function (client) {
       client.spec.address + ":" + client.spec.port);
 
     // compute the mean of the temperatures as they arrive
-    sampleCount++;
     cumulativeMovingAverage = (parseInt(msg) + sampleCount * cumulativeMovingAverage) / (sampleCount + 1);
+    sampleCount++;
 
     console.log("New average ambient temperature (cumulative): " + cumulativeMovingAverage);
 

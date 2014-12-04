@@ -1,0 +1,7 @@
+{
+  "name": "/my/home/room_1_temp",
+  "type": {
+    "name": "zmqpubsub"
+  },
+  "port": 8999
+}

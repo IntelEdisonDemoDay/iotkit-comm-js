@@ -1,0 +1,6 @@
+{
+  "name" : ".*room_._temp",
+  "type" : {
+    "name": "zmqpubsub"
+  }
+}

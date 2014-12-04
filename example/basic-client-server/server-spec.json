@@ -3,6 +3,5 @@
   "type": {
   "name": "zmqreqrep"
   },
-  "properties": {"replymsg": "hi"},
-  "port": 8333
+  "properties": {"replymsg": "hi"}
 }

@@ -1,0 +1,6 @@
+{
+  "name": "/my/home/room_3_temp",
+  "type": {
+    "name": "zmqpubsub"
+  }
+}

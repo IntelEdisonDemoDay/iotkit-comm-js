@@ -8,6 +8,7 @@
       "serverFileSuffix": "service"
     }
   },
+  "unusedPortDetectAttempts": 3,
   "stateDirName": "iotkit-comm",
   "stateMapName": "state.json",
   "localaddr": "127.0.0.1",
