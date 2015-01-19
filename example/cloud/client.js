@@ -23,7 +23,7 @@
 
 var path = require('path');
 var iotkit = require('iotkit-comm');
-var spec = new iotkit.ServiceSpec(path.join(__dirname, "garage-sensor-spec.json"));
+var spec = new iotkit.ServiceSpec(path.join(__dirname, "garage-sensor-query.json"));
 iotkit.createClient(spec, function (client) {
   client.comm.setReceivedMessageHandler(function(message, context) {
     console.log(message);
