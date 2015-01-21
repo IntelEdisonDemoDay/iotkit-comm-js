@@ -3,5 +3,5 @@
     "type" : {
         "name": "enableiot-cloud"
     },
-    "type_params": {"deviceid": "02-00-86-4b-b6-de"}
+    "type_params": {"deviceid": "EdisonInGarage"}
 }
