@@ -21,8 +21,11 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
- * Cloud plugin
- * @see EnableIoTCloudClient
- * @module plugins/enableiotCloud
- */
+var path = require('path');
+var iotkit = require('iotkit-comm');
+var spec = new iotkit.ServiceSpec(path.join(__dirname, "garage-sensor-spec2.json"));
+iotkit.createService(spec, function (service) {
+  setInterval(function () {
+    service.comm.send({name:'garage_sensor', valuestr: '68'});
+  }, 500);
+});

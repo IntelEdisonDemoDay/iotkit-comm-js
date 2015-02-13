@@ -42,7 +42,7 @@ describe('[cloud]', function () {
       var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/1884-temp-service-enableiot-cloud.json"));
       iotkit.createService(spec, function (service) {
         setInterval(function () {
-          service.comm.send(68);
+          service.comm.send({name:'garage_sensor', valuestr: '68'});
         }, 500);
         done();
       });
@@ -58,7 +58,7 @@ describe('[cloud]', function () {
       var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/1884-temp-service-enableiot-cloud.json"));
       iotkit.createClient(spec, function (client) {
         client.comm.setReceivedMessageHandler(function(message, context) {
-          expect(message).to.equal('68');
+          expect(message.data.series[0].points[0].value).to.equal('68');
           client.comm.done();
           done();
         });

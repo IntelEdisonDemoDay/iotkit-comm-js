@@ -1,6 +1,6 @@
 {
     "name" : "temperature.v1.0/garage_sensor",
     "type" : {
-        "name": "enableiot-cloud"
+        "name": "enableiot"
     }
 }

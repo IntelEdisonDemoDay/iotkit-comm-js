@@ -23,13 +23,12 @@
 
 /**
  * A sensor service that publishes data to the cloud. A client
- * that subscribes to that data from the cloud. Needs iotkit-agent
- * running on the system (see [cloud tutorial]{@tutorial cloud}).
+ * that subscribes to that data from the cloud.
  *
- * @see {@link https://github.com/intel-iot-devkit/iotkit-agent/tree/dprelease}
- * @see {@link example/cloud/server.js}
- * @see {@link example/cloud/garage-sensor-spec.json}
- * @see {@link example/cloud/client.js}
+ * @see {@link example/cloud/enableiot-publisher.js}
+ * @see {@link example/cloud/garage-sensor-spec2.json}
+ * @see {@link example/cloud/enableiot-subscriber.js}
+ * @see {@link example/cloud/garage-sensor-query2.json}
  *
  * @module example/cloud
  */
