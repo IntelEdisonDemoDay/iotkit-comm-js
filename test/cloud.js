@@ -39,7 +39,7 @@ describe('[cloud]', function () {
      */
     it("should successfully publish data to the cloud", function(done) {
       var iotkit = require('iotkit-comm');
-      var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/1884-temp-service-enableiot.json"));
+      var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/1884-temp-service-enableiot-cloud.json"));
       iotkit.createService(spec, function (service) {
         setInterval(function () {
           service.comm.send({name:'garage_sensor', valuestr: '68'});
@@ -55,7 +55,7 @@ describe('[cloud]', function () {
      */
     it("should successfully subscribe to data from the cloud", function(done) {
       var iotkit = require('iotkit-comm');
-      var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/1884-temp-service-enableiot.json"));
+      var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/1884-temp-service-enableiot-cloud.json"));
       iotkit.createClient(spec, function (client) {
         client.comm.setReceivedMessageHandler(function(message, context) {
           expect(message.data.series[0].points[0].value).to.equal('68');
