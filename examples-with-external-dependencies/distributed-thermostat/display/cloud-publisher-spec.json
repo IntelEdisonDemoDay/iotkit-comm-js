@@ -1,6 +1,6 @@
 {
   "name": "/my/home/temperature.v1.0/home_temp",
   "type": {
-    "name": "enableiot-cloud"
+    "name": "enableiot"
   }
 }
