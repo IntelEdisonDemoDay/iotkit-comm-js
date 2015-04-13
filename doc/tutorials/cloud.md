@@ -37,7 +37,7 @@ from the cloud. Next, create a service specification for your sensor (example: `
 {
     "name" : "temperature.v1.0/garage_sensor",
     "type" : {
-        "name": "enableiot"
+        "name": "enableiot-cloud"
     }
 }
 ```
@@ -85,7 +85,7 @@ service query (example: `garage-sensor-query.json`):
 {
     "name" : "temperature.v1.0/garage_sensor",
     "type" : {
-        "name": "enableiot"
+        "name": "enableiot-cloud"
     },
     "type_params": {"deviceid": "EdisonInGarage"}
 }
