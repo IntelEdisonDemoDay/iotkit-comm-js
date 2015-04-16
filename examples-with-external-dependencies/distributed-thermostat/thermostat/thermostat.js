@@ -59,4 +59,3 @@ iotkit.createService(spec, function (service) {
     });
   });
 });
-
