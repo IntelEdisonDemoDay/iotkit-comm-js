@@ -26,6 +26,12 @@ var iotkit = require('iotkit-comm');
 var spec = new iotkit.ServiceSpec(path.join(__dirname, "garage-sensor-query2.json"));
 iotkit.createClient(spec, function (client) {
   client.comm.setReceivedMessageHandler(function(message, context) {
-    console.log(message);
+    var jsonmsg = JSON.parse(message);
+    if(jsonmsg.data.series.length > 0) {
+      var series = jsonmsg.data.series[0].points;
+      for(var data in series) {
+          console.log('Received value', series[data].value);
+      }
+    }
   });
 });

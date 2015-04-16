@@ -55,13 +55,17 @@ describe('[cloud]', function () {
      */
     it("should successfully subscribe to data from the cloud", function(done) {
       var iotkit = require('iotkit-comm');
-      var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/specs/1884-temp-service-enableiot-cloud.json"));
+      var spec = new iotkit.ServiceSpec(path.join(__dirname, "resources/queries/1884-temp-service-enableiot-cloud.json"));
       iotkit.createClient(spec, function (client) {
         client.comm.setReceivedMessageHandler(function(message, context) {
-          expect(message.data.series[0].points[0].value).to.equal('68');
-          client.comm.done();
-          done();
+          var jsonmsg = JSON.parse(message);
+          if(jsonmsg.data.series.length > 0) {
+            var series = jsonmsg.data.series[0].points;
+            expect(series[0].value).to.equal('68');
+          }
         });
+        client.comm.done();
+        done();
       });
     });
   });
