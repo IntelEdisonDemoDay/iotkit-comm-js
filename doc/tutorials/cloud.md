@@ -1,11 +1,10 @@
 Publishing and subscribing to data from the cloud requires that you:
 
 1. Create a cloud account
-2. Setup your Edison to publish data
-3. Publish data
-4. View the published data
-5. Subscribe to the data
-6. Troubleshoot *(if necessary)*
+2. Publish data
+3. View the published data
+4. Subscribe to the data
+5. Troubleshoot *(if necessary)*
 
 #### Create a cloud account
 
@@ -13,10 +12,6 @@ Go to Intel's [enableiot cloud][1] site and follow instructions to create an acc
 created, an *activation key* will be available in the account details section ![account details](.
 ./images/cloud-account-details.png). Record this activation key; note that it will *expire* in less than *one hour*.
 If your activation key has expired, you can always create a new one by clicking on the adjacent 'refresh' button.
-
-#### Setup your Edison to publish or subscribe to data
-
-Activation of your Edison is done via service specification of your publisher or subscriber.
 
 #### Publish data
 
@@ -62,8 +57,6 @@ time.
 
 #### Subscribe to the data
 
-If not already registered, then register this Edison with the cloud using service query subscriber.
-
 To receive data published by the sample `garage_sensor` service running on `EdisonInGarage`, create a
 service query (example: `garage-sensor-query.json`):
 
@@ -106,10 +99,6 @@ curl www.intel.com/edison
 ```
 
 If this command hangs or fails with an error, it means the Edison is not connected to the Internet.
-
-###### Registration issues
-
-If you are having issues activating or re-activating your device, try registering your Edison as a new device
 
 NOTE: please ensure that the activation key has not expired; you can always create a new one as described in the
 'Create a cloud account' section above.
