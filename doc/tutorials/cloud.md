@@ -15,6 +15,9 @@ If your activation key has expired, you can always create a new one by clicking 
 
 #### Publish data
 
+*This section assumes that you know how to write a service application using iotkit-comm. If not,
+please go through the [service]{@tutorial service} tutorial first.*
+
 Create a service specification for your sensor (example: `garage-sensor-spec.json`):
 
 ```json
@@ -56,6 +59,9 @@ and click "Charts". Then, select your device and sensor-type to see a graph of y
 time.
 
 #### Subscribe to the data
+
+*This section assumes that you know how to write a client application using iotkit-comm. If not,
+please go through the [client]{@tutorial client} tutorial first.*
 
 To receive data published by the sample `garage_sensor` service running on `EdisonInGarage`, create a
 service query (example: `garage-sensor-query.json`):
